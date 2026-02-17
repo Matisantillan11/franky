@@ -1,3 +1,4 @@
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { ThemeProvider } from '@react-navigation/native';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
@@ -10,11 +11,14 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={CustomTheme}>
-        <Stack>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="buttons" options={{ headerShown: false }} />
-          <Stack.Screen name="inputs" options={{ headerShown: false }} />
-        </Stack>
+        <BottomSheetModalProvider>
+          <Stack>
+            <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name="buttons" options={{ headerShown: false }} />
+            <Stack.Screen name="inputs" options={{ headerShown: false }} />
+            <Stack.Screen name="modal" options={{ headerShown: false }} />
+          </Stack>
+        </BottomSheetModalProvider>
       </ThemeProvider>
       <StatusBar style="auto" />
     </GestureHandlerRootView>
