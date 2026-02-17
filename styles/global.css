@@ -1,0 +1,81 @@
+@import 'tailwindcss';
+@import 'uniwind';
+
+/* Configure content sources for Tailwind CSS */
+@source '../app/**/*.{js,jsx,ts,tsx}';
+@source '../components/**/*.{js,jsx,ts,tsx}';
+
+@theme {
+  --color-brand-brand100: #e3f8f5;
+  --color-brand-brand200: #b4e9e2;
+  --color-brand-brand300: #84d6cb;
+  --color-brand-brand400: #5fc4b8;
+  --color-brand-brand500: #3fb6a8;
+  --color-brand-brand600: #2b7d83;
+  --color-brand-brand700: #1c3a43;
+  --color-brand-brand800: #122027;
+  --color-brand-brand900: #0a1014;
+
+  --color-gray-10: '#A3A9B4';
+  --color-gray-25: '#FCFCFD';
+  --color-gray-50: '#F9FAFB';
+  --color-gray-90: '#E9E9E9';
+  --color-gray-100: '#F2F4F7';
+  --color-gray-200: '#EAECF0';
+  --color-gray-300: '#D0D5DD';
+  --color-gray-400: '#98A2B3';
+  --color-gray-500: '#667085';
+  --color-gray-600: '#475467';
+  --color-gray-700: '#344054';
+  --color-gray-800: '#1D2939';
+  --color-gray-900: '#101828';
+  --color-gray-950: '#0C111D';
+  --color-gray-975: '#0C111D';
+
+  --color-error-25: '#FFFBFA';
+  --color-error-50: '#FEF3F2';
+  --color-error-100: '#FEE4E2';
+  --color-error-200: '#FECDCA';
+  --color-error-300: '#FDA29B';
+  --color-error-400: '#F97066';
+  --color-error-500: '#F04438';
+  --color-error-600: '#D92D20';
+  --color-error-700: '#B42318';
+  --color-error-800: '#912018';
+  --color-error-900: '#7A271A';
+  --color-error-950: '#55160C';
+  --color-error975: '#55160C';
+
+  --color-warning-warning25: '#FFFCF5';
+  --color-warning-warning50: '#FFFAEB';
+  --color-warning-warning100: '#FEF0C7';
+  --color-warning-warning200: '#FEDF89';
+  --color-warning-warning300: '#FEC84B';
+  --color-warning-warning400: '#FDB022';
+  --color-warning-warning500: '#F79009';
+  --color-warning-warning600: '#DC6803';
+  --color-warning-warning700: '#B54708';
+  --color-warning-warning800: '#93370D';
+  --color-warning-warning900: '#7A2E0E';
+  --color-warning-warning950: '#4E1D09';
+  --color-warning-warning975: '#4E1D09';
+
+  --color-success-success25: '#F6FEF9';
+  --color-success-success50: '#ECFDF3';
+  --color-success-success75: '#DAF1BD';
+  --color-success-success100: '#D1FADF';
+  --color-success-success200: '#A6F4C5';
+  --color-success-success300: '#6CE9A6';
+  --color-success-success400: '#32D583';
+  --color-success-success500: '#12B76A';
+  --color-success-success600: '#039855';
+  --color-success-success700: '#027A48';
+  --color-success-success800: '#05603A';
+  --color-success-success900: '#054F31';
+  --color-success-success950: '#053321';
+  --color-success-success975: '#053321';
+
+  --color-text-primary: '#FFFFFF';
+  --color-text-secondary: '#D1D5DB';
+  --color-text-tertiary: '#9CA3AF';
+}

@@ -36,7 +36,7 @@ yarn-error.*
 # typescript
 *.tsbuildinfo
 
-app-example
+expo-env.d.ts
 
 # generated native folders
 /ios
