@@ -12,6 +12,8 @@ export default function RootLayout() {
       <ThemeProvider value={CustomTheme}>
         <Stack>
           <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="buttons" options={{ headerShown: false }} />
+          <Stack.Screen name="inputs" options={{ headerShown: false }} />
         </Stack>
       </ThemeProvider>
       <StatusBar style="auto" />

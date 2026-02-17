@@ -1,7 +1,7 @@
 import { cva } from 'class-variance-authority';
 
 export const buttonVariants = cva(
-  'rounded-full flex-row items-center justify-center font-medium  disabled:bg-gray-gray500 disabled:hover:cursor-not-allowed disabled:active:cursor-not-allowed disabled:hover:bg-gray-gray500 disabled:active:bg-gray-gray500',
+  'rounded-full w-fit flex-row items-center justify-center font-medium  disabled:bg-gray-gray500 disabled:hover:cursor-not-allowed disabled:active:cursor-not-allowed disabled:hover:bg-gray-gray500 disabled:active:bg-gray-gray500',
   {
     variants: {
       variant: {
