@@ -17,6 +17,7 @@ export default function RootLayout() {
             <Stack.Screen name="buttons" options={{ headerShown: false }} />
             <Stack.Screen name="inputs" options={{ headerShown: false }} />
             <Stack.Screen name="modal" options={{ headerShown: false }} />
+            <Stack.Screen name="radio" options={{ headerShown: false }} />
           </Stack>
         </BottomSheetModalProvider>
       </ThemeProvider>

@@ -19,6 +19,9 @@ export default function Index() {
         <Button variant="ghost" onPress={() => router.push('/modal')}>
           Modal
         </Button>
+        <Button variant="ghost" onPress={() => router.push('/radio')}>
+          Radio
+        </Button>
       </View>
     </SafeAreaView>
   );
