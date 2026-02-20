@@ -1,4 +1,4 @@
-import { TouchableOpacity } from 'react-native';
+import { Pressable } from 'react-native';
 import { cn } from '~/shared/utils/tailwind';
 import ThemedText from '../themed-text';
 import { ButtonProps } from './types';
@@ -13,9 +13,8 @@ export default function Button({
   ...props
 }: ButtonProps) {
   return (
-    <TouchableOpacity
+    <Pressable
       onPress={onPress}
-      activeOpacity={0.7}
       className={cn(buttonVariants({ variant, size }), className)}
       {...props}
     >
@@ -26,6 +25,6 @@ export default function Button({
         {children}
       </ThemedText>
       {props.rightIcon}
-    </TouchableOpacity>
+    </Pressable>
   );
 }

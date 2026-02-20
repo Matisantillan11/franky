@@ -5,10 +5,11 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-brand-brand500 border-none hover:bg-brand-brand600 active:bg-brand-brand600',
+        default:
+          'bg-brand-brand500/35 border-none hover:bg-brand-brand600/20 active:bg-brand-brand600/20',
         outline:
-          'bg-transparent border border-brand-brand500 hover:bg-brand-brand500 active:bg-brand-brand500 disabled:border-gray-gray500',
-        ghost: 'bg-transparent border-none hover:bg-brand-brand900/10 active:bg-brand-brand900/10',
+          'bg-transparent border-2 border-brand-brand500/35 hover:bg-brand-brand500/35 active:bg-brand-brand500/35 disabled:border-gray-gray500',
+        ghost: 'bg-transparent border-none hover:bg-brand-brand500/20 active:bg-brand-brand500/20',
       },
       size: {
         default: 'px-2 min-h-10',

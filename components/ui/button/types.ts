@@ -1,8 +1,8 @@
 import { VariantProps } from 'class-variance-authority';
-import { TouchableOpacityProps } from 'react-native';
+import { PressableProps } from 'react-native';
 import { buttonVariants } from './variants';
 
-export type ButtonProps = TouchableOpacityProps & {
+export type ButtonProps = PressableProps & {
   children?: React.ReactNode;
   variant?: ButtonVariant;
   size?: ButtonSize;
