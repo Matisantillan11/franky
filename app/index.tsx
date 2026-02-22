@@ -2,9 +2,23 @@ import { useRouter } from 'expo-router';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '~/components/ui';
+import { logError } from '~/libs';
 
 export default function Index() {
   const router = useRouter();
+
+  const handleTestError = () => {
+    logError({
+      error: {
+        module: 'index',
+        component: 'index',
+        func: 'handleTestError',
+        message: 'This is a test error triggered manually',
+      },
+      errorName: 'ONBOARDING_ERROR',
+      tagName: 'ONBOARDING_ERROR',
+    });
+  };
 
   return (
     <SafeAreaView>
@@ -23,6 +37,10 @@ export default function Index() {
         </Button>
         <Button variant="ghost" onPress={() => router.push('/toast')}>
           Toast
+        </Button>
+
+        <Button variant="ghost" onPress={handleTestError}>
+          Trigger error
         </Button>
       </View>
     </SafeAreaView>

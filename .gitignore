@@ -31,7 +31,7 @@ yarn-error.*
 *.pem
 
 # local env files
-.env*.local
+.env*
 
 # typescript
 *.tsbuildinfo
@@ -41,3 +41,5 @@ expo-env.d.ts
 # generated native folders
 /ios
 /android
+
+.env.local
