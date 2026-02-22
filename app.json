@@ -46,7 +46,8 @@
           "project": "franky-money-tracker",
           "organization": "thera-llc"
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,

@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button } from '~/components/ui';
-import { logError } from '~/libs';
+import { logError, logEvent } from '~/libs';
 
 export default function Index() {
   const router = useRouter();
@@ -17,6 +17,18 @@ export default function Index() {
       },
       errorName: 'ONBOARDING_ERROR',
       tagName: 'ONBOARDING_ERROR',
+    });
+  };
+
+  const handleTestEvent = () => {
+    logEvent({
+      eventName: 'ONBOARDING',
+      properties: {
+        module: 'index',
+        component: 'index',
+        func: 'handleTestEvent',
+        message: 'This is a test event triggered manually',
+      },
     });
   };
 
@@ -41,6 +53,10 @@ export default function Index() {
 
         <Button variant="ghost" onPress={handleTestError}>
           Trigger error
+        </Button>
+
+        <Button variant="ghost" onPress={handleTestEvent}>
+          Capture event
         </Button>
       </View>
     </SafeAreaView>
