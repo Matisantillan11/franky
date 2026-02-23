@@ -9,11 +9,7 @@ function RootLayout() {
     <AppProviders>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="buttons" options={{ headerShown: false }} />
-        <Stack.Screen name="inputs" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ headerShown: false }} />
-        <Stack.Screen name="radio" options={{ headerShown: false }} />
-        <Stack.Screen name="toast" options={{ headerShown: false }} />
+        <Stack.Screen name="onboarding" options={{ headerShown: false }} />
       </Stack>
     </AppProviders>
   );
