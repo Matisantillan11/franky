@@ -5,7 +5,7 @@ import { ThemedText } from '~/components/ui';
 
 export default function StepOne() {
   return (
-    <View className="my-10 gap-4">
+    <View className="gap-4">
       <View className="items-center justify-center">
         <View className="items-center justify-center rounded-full p-10">
           <BlurView top={-55} left={-60} size={500} intensity={25} />

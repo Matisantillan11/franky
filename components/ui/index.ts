@@ -1,4 +1,5 @@
 export { default as Button } from './button';
+export { People, User } from './icons';
 export { default as Input } from './input';
 export { default as Modal } from './modal';
 export { type BottomSheetModal } from './modal/types';

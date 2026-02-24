@@ -1,9 +1,13 @@
-import { Stack } from 'expo-router';
+import { Slot } from 'expo-router';
+import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function OnboardingLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-    </Stack>
+    <SafeAreaView edges={['top', 'bottom']} className="flex-1">
+      <View className="h-full items-center justify-between gap-4">
+        <Slot />
+      </View>
+    </SafeAreaView>
   );
 }
