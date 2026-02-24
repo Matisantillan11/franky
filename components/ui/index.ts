@@ -1,4 +1,5 @@
 export { default as Button } from './button';
+export { default as FlashList } from './flash-list';
 export { People, User } from './icons';
 export { default as Input } from './input';
 export { default as Modal } from './modal';

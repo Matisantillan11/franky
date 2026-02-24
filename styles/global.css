@@ -78,4 +78,6 @@
   --color-text-primary: '#FFFFFF';
   --color-text-secondary: '#D1D5DB';
   --color-text-tertiary: '#9CA3AF';
+
+  --shadow-inset-md: inset 0 -30px 60px -20px rgba(0, 0, 0, 0.9);
 }

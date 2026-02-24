@@ -5,7 +5,7 @@ export const inputVariants = cva(
   {
     variants: {
       variant: {
-        default: 'border-gray-gray600/50',
+        default: 'border-gray-gray600/50 focus:border-brand-brand500',
         ghost: 'border-transparent',
       },
       size: {

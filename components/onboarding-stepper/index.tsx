@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { View } from 'react-native';
+import StepFive from '../screens/onboarding/step-five';
+import StepFour from '../screens/onboarding/step-four';
 import StepOne from '../screens/onboarding/step-one';
 import StepThree from '../screens/onboarding/step-three';
 import StepTwo from '../screens/onboarding/step-two';
@@ -13,15 +15,19 @@ export const OnboardingStepper = () => {
     [STEPS.STEP_ONE]: <StepOne />,
     [STEPS.STEP_TWO]: <StepTwo />,
     [STEPS.STEP_THREE]: <StepThree />,
+    [STEPS.STEP_FOUR]: <StepFour />,
+    [STEPS.STEP_FIVE]: <StepFive />,
   });
 
   const stepActionTextDictionary = Object.freeze({
     [STEPS.STEP_ONE]: 'Get started',
     [STEPS.STEP_TWO]: 'Got it!',
     [STEPS.STEP_THREE]: 'Next',
+    [STEPS.STEP_FOUR]: 'Next',
+    [STEPS.STEP_FIVE]: 'Next',
   });
 
-  const isLatestStep = step === STEPS.STEP_THREE;
+  const isLatestStep = step === STEPS.STEP_FIVE;
 
   const handleNextStep = () => {
     if (isLatestStep) {
