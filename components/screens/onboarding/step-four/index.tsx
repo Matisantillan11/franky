@@ -44,7 +44,6 @@ export default function StepFour() {
             );
           }}
           keyExtractor={(item) => item.id}
-          className="shadow-inset-md"
         />
       </PrimitiveRadioGroup>
     </View>

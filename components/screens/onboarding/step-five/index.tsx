@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { View } from 'react-native';
 import { Input, ThemedText } from '~/components/ui';
+import { transformValueToMoney } from '~/shared/utils/text-utils';
 
 export default function StepFive() {
+  const [monthIncome, setMonthIcome] = useState<string>('');
+
   return (
     <View className="gap-4">
       <View className="items-center gap-4 px-10">
@@ -21,6 +25,8 @@ export default function StepFive() {
           size="lg"
           className="w-full"
           placeholder="$ 0,00"
+          value={transformValueToMoney(monthIncome)}
+          onChangeText={setMonthIcome}
         />
         <View className="mx-10">
           <ThemedText className="text-center">
