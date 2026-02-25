@@ -1,12 +1,6 @@
-import type { InferInsertModel, InferSelectModel } from 'drizzle-orm';
-import type * as LucideIcons from 'lucide-react-native';
-import type { categories, transactions } from './schema';
-
-/** Any valid PascalCase icon name exported by lucide-react-native. */
-export type LucideIconName = keyof typeof LucideIcons;
-
-export type Category = InferSelectModel<typeof categories>;
-export type NewCategory = Omit<InferInsertModel<typeof categories>, 'id' | 'createdAt'>;
+import { InferInsertModel, InferSelectModel } from 'drizzle-orm';
+import { transactions } from '../schema';
+import { Category } from './category';
 
 export type Transaction = InferSelectModel<typeof transactions>;
 export type NewTransaction = Omit<
@@ -19,7 +13,6 @@ export type TransactionWithCategory = Transaction & {
 };
 
 export type TransactionType = 'income' | 'expense';
-export type CategoryType = 'income' | 'expense' | 'both';
 
 export type TransactionFilters = {
   type?: TransactionType;

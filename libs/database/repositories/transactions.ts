@@ -101,7 +101,7 @@ export const transactionsRepository = {
   },
 
   async getByCategory(
-    filters: TransactionFilters = {},
+    filters: TransactionFilters = {}
   ): Promise<{ category: typeof categories.$inferSelect | null; total: number }[]> {
     const where = buildWhereClause(filters);
 

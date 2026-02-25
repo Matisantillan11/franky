@@ -1,11 +1,10 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
-import { randomUUID } from 'expo-crypto';
 import { categories } from './categories';
 
 export const transactions = sqliteTable('transactions', {
   id: text('id')
     .primaryKey()
-    .$defaultFn(() => randomUUID())
+    .$defaultFn(() => crypto.randomUUID())
     .notNull(),
   // Stored in minor currency units (cents) to avoid floating-point issues
   amount: integer('amount').notNull(),

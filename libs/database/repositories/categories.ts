@@ -26,11 +26,7 @@ export const categoriesRepository = {
   },
 
   async update(id: string, input: Partial<NewCategory>): Promise<Category | undefined> {
-    const result = await db
-      .update(categories)
-      .set(input)
-      .where(eq(categories.id, id))
-      .returning();
+    const result = await db.update(categories).set(input).where(eq(categories.id, id)).returning();
     return result[0];
   },
 

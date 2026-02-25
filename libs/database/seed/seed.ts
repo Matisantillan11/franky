@@ -1,7 +1,7 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../client';
 import { categories } from '../schema';
-import type { LucideIconName } from '../types';
+import type { LucideIconName } from '../types/lucide-icon-name';
 
 type SeedCategory = {
   name: string;
