@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { View } from 'react-native';
+import { ROUTES } from '~/shared/constants/routes';
+import { useStorage } from '~/shared/hooks/useStorage';
 import StepFive from '../screens/onboarding/step-five';
 import StepFour from '../screens/onboarding/step-four';
 import StepOne from '../screens/onboarding/step-one';
@@ -8,11 +11,18 @@ import StepThree from '../screens/onboarding/step-three';
 import StepTwo from '../screens/onboarding/step-two';
 import SuccessScreen from '../screens/success-screen';
 import { Button } from '../ui';
+import { ONBOARDING_STORAGE } from './constants';
 import { STEPS } from './types';
 
 export const OnboardingStepper = () => {
   const [step, setStep] = useState(STEPS.STEP_ONE);
   const [isOnboardingCompleted, setIsOnboardingCompleted] = useState(false);
+
+  const router = useRouter();
+  const storage = useStorage({ id: ONBOARDING_STORAGE.id });
+
+  const onboardingActiveStep = storage.get(ONBOARDING_STORAGE.keys.activeStep, 'number');
+  const storageCompleted = storage.get(ONBOARDING_STORAGE.keys.storageCompleted, 'boolean');
 
   const stepDictionary = Object.freeze({
     [STEPS.STEP_ONE]: <StepOne />,
@@ -37,16 +47,27 @@ export const OnboardingStepper = () => {
   const handleNextStep = () => {
     if (isLatestStep) {
       setIsOnboardingCompleted(true);
+      storage.store(ONBOARDING_STORAGE.keys.storageCompleted, true);
       return;
     }
 
     setStep(step + 1);
+    storage.store(ONBOARDING_STORAGE.keys.activeStep, step + 1);
   };
 
   const handleActionPress = () => {
-    setIsOnboardingCompleted(false);
-    setStep(STEPS.STEP_ONE);
+    router.replace(ROUTES.HOME);
   };
+
+  useEffect(() => {
+    if (onboardingActiveStep && !storageCompleted) {
+      setStep(onboardingActiveStep as STEPS);
+    }
+
+    if (storageCompleted) {
+      router.replace(ROUTES.HOME);
+    }
+  }, []);
 
   if (isOnboardingCompleted) {
     return <SuccessScreen actionText="Go to my dashboard" handleActionPress={handleActionPress} />;
