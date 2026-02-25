@@ -1,10 +1,13 @@
 import { Stack } from 'expo-router';
+import { DatabaseProvider } from '~/libs';
 
 function HomeLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: 'Home screen' }} />
-    </Stack>
+    <DatabaseProvider>
+      <Stack>
+        <Stack.Screen name="index" options={{ title: 'Home screen' }} />
+      </Stack>
+    </DatabaseProvider>
   );
 }
 

@@ -15,7 +15,7 @@ config.transformer = {
 config.resolver = {
   ...config.resolver,
   assetExts: assetExts.filter((ext) => ext !== 'svg'),
-  sourceExts: [...sourceExts, 'svg'],
+  sourceExts: [...sourceExts, 'svg', 'sql'],
 };
 
 module.exports = withUniwindConfig(config, {

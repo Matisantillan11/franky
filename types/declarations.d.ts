@@ -7,3 +7,7 @@ declare module '*.svg' {
   const value: any;
   export default value;
 }
+
+declare const crypto: {
+  randomUUID(): string;
+};
