@@ -3,13 +3,7 @@ import { cn } from '~/shared/utils/tailwind';
 import { Button, ThemedText } from '../ui';
 import { BudgetCardProps } from './types';
 
-export default function BudgetCard({
-  icon,
-  title,
-  description,
-  className,
-  ...rest
-}: BudgetCardProps) {
+export default function Card({ icon, title, description, className, ...rest }: BudgetCardProps) {
   return (
     <Button
       {...rest}

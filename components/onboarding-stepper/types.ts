@@ -4,4 +4,5 @@ export enum STEPS {
   STEP_THREE,
   STEP_FOUR,
   STEP_FIVE,
+  STEP_SIX,
 }
