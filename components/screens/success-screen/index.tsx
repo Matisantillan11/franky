@@ -1,4 +1,5 @@
 import { View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { BlurView } from '~/components/blur-circle';
 import { Button, ThemedText } from '~/components/ui';
@@ -11,6 +12,8 @@ export default function SuccessScreen({
   actionText: string;
   handleActionPress: () => void;
 }) {
+  const getAnimation = () => FadeInDown.delay(500);
+
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1">
       <View className="my-10 w-full flex-1 justify-between gap-10">
@@ -19,7 +22,7 @@ export default function SuccessScreen({
             <View className="items-center justify-center">
               <View className="items-center justify-center rounded-full p-10">
                 <BlurView top={-100} left={-80} size={500} intensity={25} />
-                <SuccessAnimatedIcon size={200} duration={1500} />
+                <SuccessAnimatedIcon size={200} duration={500} />
               </View>
             </View>
 
@@ -33,11 +36,11 @@ export default function SuccessScreen({
             </View>
           </View>
 
-          <View className="w-full px-4">
+          <Animated.View entering={getAnimation()} className="w-full px-4">
             <Button className="w-full" onPress={handleActionPress}>
               {actionText}
             </Button>
-          </View>
+          </Animated.View>
         </View>
       </View>
     </SafeAreaView>
