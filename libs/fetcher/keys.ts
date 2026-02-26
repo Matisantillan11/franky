@@ -15,4 +15,7 @@ export const queryKeys = {
     byId: (id: string) => ['monthlyBudgets', id] as const,
     latest: ['monthlyBudgets', 'latest'] as const,
   },
+  settings: {
+    all: ['settings'] as const,
+  },
 } as const;

@@ -15,4 +15,5 @@ export const transactionsRelations = relations(transactions, ({ one }) => ({
 
 export { categories } from './categories';
 export { monthlyBudget } from './montly-budget';
+export { settings } from './settings';
 export { transactions } from './transactions';

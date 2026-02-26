@@ -1,13 +1,17 @@
-import { useState } from 'react';
 import { View } from 'react-native';
 import Card from '~/components/card';
 import { ThemedText } from '~/components/ui';
+import { GoalType } from '~/shared/types/settings.types';
 import { cn } from '~/shared/utils/tailwind';
-import { GOAL_OPTION, GOAL_OPTIONS } from './constants';
+import { GOAL_OPTIONS } from './constants';
 
-export default function StepSix() {
-  const [goalOptionSelected, setGoalOptionSelected] = useState<GOAL_OPTION>(GOAL_OPTION.DAILY);
-
+export default function StepSix({
+  goal,
+  updateGoal,
+}: {
+  goal: GoalType;
+  updateGoal: (goal: GoalType) => void;
+}) {
   return (
     <View className="gap-4">
       <View className="items-center gap-4 px-10">
@@ -21,12 +25,12 @@ export default function StepSix() {
 
       <View className="items-center justify-center gap-4 px-6">
         {GOAL_OPTIONS.map((option) => {
-          const isSelected = goalOptionSelected === option.id;
+          const isSelected = goal === option.id;
           return (
             <Card
               key={option.title}
               disabled={option.disabled}
-              onPress={() => setGoalOptionSelected(option.id)}
+              onPress={() => updateGoal(option.id)}
               icon={
                 <View
                   className={cn('rounded-xl p-2', isSelected ? 'bg-brand-brand500' : 'bg-gray-600')}

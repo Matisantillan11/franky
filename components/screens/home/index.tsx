@@ -5,6 +5,7 @@ import { transformValueToCurrency } from '~/shared/utils/text-utils';
 
 export default function HomeScreen() {
   const { data: latestBudget } = useMonthlyBudgetLatest();
+
   const monthlyBudget = transformValueToCurrency(latestBudget?.amount?.toString() ?? '0');
 
   return (

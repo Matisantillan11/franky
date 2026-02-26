@@ -30,7 +30,7 @@ export default function StepFive({
           size="lg"
           className="w-full"
           placeholder="$ 0,00"
-          value={transformValueToCurrency(monthlyIncome)}
+          value={transformValueToCurrency(monthlyIncome, true)}
           onChangeText={updateMonthlyIncome}
           isError={isFieldError}
           errorText="There was an error with the income value."

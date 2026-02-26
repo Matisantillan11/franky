@@ -1,4 +1,4 @@
-export const transformValueToCurrency = (value: string, decimal?: string) => {
+export const transformValueToCurrency = (value: string, withDecimal?: boolean) => {
   if (!value) return '';
 
   const onlyNumbers = value.replace(/\D/g, '');
@@ -12,7 +12,7 @@ export const transformValueToCurrency = (value: string, decimal?: string) => {
 
   const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-  if (!decimal) {
+  if (!withDecimal) {
     return `$ ${formattedIntegerPart}`;
   }
 

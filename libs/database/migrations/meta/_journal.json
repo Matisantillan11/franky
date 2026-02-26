@@ -15,6 +15,13 @@
       "when": 1772061852833,
       "tag": "0001_add-monthly-budget",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1772067772394,
+      "tag": "0002_add-settings-schema",
+      "breakpoints": true
     }
   ]
 }

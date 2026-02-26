@@ -1,17 +1,19 @@
-import { useState } from 'react';
 import { View } from 'react-native';
 import BudgetLogo from '~/assets/images/budget.svg';
 import { BlurView } from '~/components/blur-circle';
 import Card from '~/components/card';
 import { ThemedText } from '~/components/ui';
+import { BudgetType } from '~/shared/types/settings.types';
 import { cn } from '~/shared/utils/tailwind';
-import { BUDGET_OPTION, BUDGET_OPTIONS } from './constants';
+import { BUDGET_OPTIONS } from './constants';
 
-export default function StepThree() {
-  const [budgetOptionSelected, setBudgetOptionSelected] = useState<BUDGET_OPTION>(
-    BUDGET_OPTION.PERSONAL
-  );
-
+export default function StepThree({
+  budgetType,
+  updateBudgetType,
+}: {
+  budgetType: BudgetType;
+  updateBudgetType: (budgetType: BudgetType) => void;
+}) {
   return (
     <View className="gap-4">
       <View className="-mt-10 items-center justify-center rounded-full">
@@ -30,7 +32,7 @@ export default function StepThree() {
 
       <View className="items-center justify-center gap-4 px-6">
         {BUDGET_OPTIONS.map((option) => {
-          const isSelected = budgetOptionSelected === option.id;
+          const isSelected = budgetType === option.id;
           return (
             <Card
               key={option.title}
@@ -42,6 +44,7 @@ export default function StepThree() {
                   {option.icon}
                 </View>
               }
+              onPress={() => updateBudgetType(option.id)}
               title={option.title}
               description={option.description}
               className={cn(
