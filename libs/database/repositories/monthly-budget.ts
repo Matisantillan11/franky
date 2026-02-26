@@ -1,4 +1,4 @@
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { db } from '../client';
 import { monthlyBudget } from '../schema';
 import type { MonthlyBudget, NewMonthlyBudget } from '../types';
@@ -10,6 +10,15 @@ export const monthlyBudgetRepository = {
       return query.where(eq(monthlyBudget.createdAt, createdAt));
     }
     return query;
+  },
+
+  async findLatest(): Promise<MonthlyBudget | undefined> {
+    const result = await db
+      .select()
+      .from(monthlyBudget)
+      .orderBy(desc(monthlyBudget.createdAt))
+      .limit(1);
+    return result[0];
   },
 
   async findById(id: string): Promise<MonthlyBudget | undefined> {

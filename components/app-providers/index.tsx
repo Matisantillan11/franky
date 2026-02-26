@@ -5,6 +5,7 @@ import React from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Toaster } from '~/components/ui';
 import { DatabaseProvider } from '~/libs';
+import { FetcherProvider } from '~/libs/fetcher';
 import { CustomTheme } from '~/shared/constants/theme';
 
 export default function AppProviders({ children }: { children: React.ReactNode }) {
@@ -12,7 +13,9 @@ export default function AppProviders({ children }: { children: React.ReactNode }
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={CustomTheme}>
         <DatabaseProvider>
-          <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+          <FetcherProvider>
+            <BottomSheetModalProvider>{children}</BottomSheetModalProvider>
+          </FetcherProvider>
         </DatabaseProvider>
       </ThemeProvider>
       <Toaster />

@@ -5,4 +5,9 @@ export default defineConfig({
   out: './libs/database/migrations',
   dialect: 'sqlite',
   driver: 'expo',
+  migrations: {
+    table: 'migrations',
+    schema: 'public',
+    prefix: 'index',
+  },
 });

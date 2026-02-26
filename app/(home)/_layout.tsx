@@ -2,8 +2,8 @@ import { Stack } from 'expo-router';
 
 function HomeLayout() {
   return (
-    <Stack>
-      <Stack.Screen name="index" options={{ title: 'Home screen' }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
     </Stack>
   );
 }

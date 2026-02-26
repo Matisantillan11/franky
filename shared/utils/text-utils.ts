@@ -1,4 +1,4 @@
-export const transformValueToMoney = (value: string) => {
+export const transformValueToCurrency = (value: string, decimal?: string) => {
   if (!value) return '';
 
   const onlyNumbers = value.replace(/\D/g, '');
@@ -9,9 +9,18 @@ export const transformValueToMoney = (value: string) => {
   }
 
   const integerPart = onlyNumbers.slice(0, -2).replace(/^0+(?!$)/, '');
-  const decimalPart = onlyNumbers.slice(-2);
 
   const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
+  if (!decimal) {
+    return `$ ${formattedIntegerPart}`;
+  }
+
+  const decimalPart = onlyNumbers.slice(-2);
   return `$ ${formattedIntegerPart},${decimalPart}`;
+};
+
+export const clearValue = (value?: string) => {
+  if (!value) return '';
+  return value.replace(/\D/g, '');
 };

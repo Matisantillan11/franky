@@ -1,10 +1,11 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { generateUUID } from '../utils';
 import { categories } from './categories';
 
 export const transactions = sqliteTable('transactions', {
   id: text('id')
     .primaryKey()
-    .$defaultFn(() => crypto.randomUUID())
+    .$defaultFn(() => generateUUID())
     .notNull(),
   // Stored in minor currency units (cents) to avoid floating-point issues
   amount: integer('amount').notNull(),

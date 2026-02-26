@@ -1,9 +1,10 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { generateUUID } from '../utils';
 
 export const categories = sqliteTable('categories', {
   id: text('id')
     .primaryKey()
-    .$defaultFn(() => crypto.randomUUID())
+    .$defaultFn(() => generateUUID())
     .notNull(),
   name: text('name').notNull(),
   type: text('type', { enum: ['income', 'expense', 'both'] }).notNull(),

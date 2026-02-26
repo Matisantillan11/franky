@@ -1,11 +1,16 @@
-import { useState } from 'react';
 import { View } from 'react-native';
 import { Input, ThemedText } from '~/components/ui';
-import { transformValueToMoney } from '~/shared/utils/text-utils';
+import { transformValueToCurrency } from '~/shared/utils/text-utils';
 
-export default function StepFive() {
-  const [monthIncome, setMonthIcome] = useState<string>('');
-
+export default function StepFive({
+  isFieldError,
+  monthlyIncome,
+  updateMonthlyIncome,
+}: {
+  isFieldError: boolean;
+  monthlyIncome: string;
+  updateMonthlyIncome: (income: string) => void;
+}) {
   return (
     <View className="gap-4">
       <View className="items-center gap-4 px-10">
@@ -25,8 +30,10 @@ export default function StepFive() {
           size="lg"
           className="w-full"
           placeholder="$ 0,00"
-          value={transformValueToMoney(monthIncome)}
-          onChangeText={setMonthIcome}
+          value={transformValueToCurrency(monthlyIncome)}
+          onChangeText={updateMonthlyIncome}
+          isError={isFieldError}
+          errorText="There was an error with the income value."
         />
         <View className="mx-10">
           <ThemedText className="text-center">

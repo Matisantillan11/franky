@@ -1,6 +1,7 @@
 export { db } from './client';
 export { DatabaseProvider } from './provider';
 export { categoriesRepository, transactionsRepository } from './repositories';
+export { monthlyBudgetRepository } from './repositories/monthly-budget';
 export type {
   Category,
   CategoryType,

@@ -1,8 +1,10 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { ActivityIndicator, View } from 'react-native';
+import { useCreateMonthlyBudget } from '~/libs/fetcher';
 import { ROUTES } from '~/shared/constants/routes';
 import { useStorage } from '~/shared/hooks/useStorage';
+import { clearValue } from '~/shared/utils/text-utils';
 import StepFive from '../screens/onboarding/step-five';
 import StepFour from '../screens/onboarding/step-four';
 import StepOne from '../screens/onboarding/step-one';
@@ -17,19 +19,38 @@ import { STEPS } from './types';
 export const OnboardingStepper = () => {
   const [step, setStep] = useState(STEPS.STEP_ONE);
   const [isOnboardingCompleted, setIsOnboardingCompleted] = useState(false);
+  const [monthlyIncome, setMonthlyIncome] = useState<string>('');
 
   const router = useRouter();
   const storage = useStorage({ id: ONBOARDING_STORAGE.id });
 
+  const {
+    mutateAsync: createMonthlyBudget,
+    isPending: isMonthlyBudgetCreating,
+    isError: isMonthlyBudgetError,
+    isSuccess: isMonthlyBudgetSuccess,
+    data: monthlyBudget,
+  } = useCreateMonthlyBudget();
+
   const onboardingActiveStep = storage.get(ONBOARDING_STORAGE.keys.activeStep, 'number');
   const storageCompleted = storage.get(ONBOARDING_STORAGE.keys.storageCompleted, 'boolean');
+
+  const handleMonthlyIncomeChange = (income: string) => {
+    setMonthlyIncome(income);
+  };
 
   const stepDictionary = Object.freeze({
     [STEPS.STEP_ONE]: <StepOne />,
     [STEPS.STEP_TWO]: <StepTwo />,
     [STEPS.STEP_THREE]: <StepThree />,
     [STEPS.STEP_FOUR]: <StepFour />,
-    [STEPS.STEP_FIVE]: <StepFive />,
+    [STEPS.STEP_FIVE]: (
+      <StepFive
+        monthlyIncome={monthlyIncome}
+        updateMonthlyIncome={handleMonthlyIncomeChange}
+        isFieldError={isMonthlyBudgetError}
+      />
+    ),
     [STEPS.STEP_SIX]: <StepSix />,
   });
 
@@ -43,17 +64,37 @@ export const OnboardingStepper = () => {
   });
 
   const isLatestStep = step === STEPS.STEP_SIX;
+  const isIncomeStep = step === STEPS.STEP_FIVE;
 
-  const handleNextStep = () => {
+  const handleCreateMonthlyBudget = async () => {
+    if (!monthlyIncome) return;
+    const amount = Number(clearValue(monthlyIncome));
+    await createMonthlyBudget({
+      amount,
+    });
+  };
+
+  const handleNextStep = useCallback(async () => {
     if (isLatestStep) {
       setIsOnboardingCompleted(true);
       storage.store(ONBOARDING_STORAGE.keys.storageCompleted, true);
       return;
     }
 
+    if (isIncomeStep) {
+      await handleCreateMonthlyBudget();
+    }
+
     setStep(step + 1);
     storage.store(ONBOARDING_STORAGE.keys.activeStep, step + 1);
-  };
+  }, [isLatestStep, step]);
+
+  console.log({
+    isMonthlyBudgetCreating,
+    isMonthlyBudgetError,
+    isMonthlyBudgetSuccess,
+    monthlyBudget,
+  });
 
   const handleActionPress = () => {
     router.replace(ROUTES.HOME);
@@ -79,7 +120,11 @@ export const OnboardingStepper = () => {
 
       <View className="w-full px-4">
         <Button className="w-full" onPress={handleNextStep}>
-          {stepActionTextDictionary[step]}
+          {isMonthlyBudgetCreating ? (
+            <ActivityIndicator size="small" />
+          ) : (
+            stepActionTextDictionary[step]
+          )}
         </Button>
       </View>
     </View>
