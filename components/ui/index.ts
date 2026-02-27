@@ -1,6 +1,17 @@
 export { default as Button } from './button';
 export { default as FlashList } from './flash-list';
-export { Calendar, People, Receipt, Saving, Shrub, User } from './icons';
+export {
+  Calendar,
+  Home,
+  People,
+  Plus,
+  Receipt,
+  Saving,
+  Shrub,
+  TrendingUp,
+  User,
+  Wallet,
+} from './icons';
 export { default as Input } from './input';
 export { default as Modal } from './modal';
 export { type BottomSheetModal } from './modal/types';
