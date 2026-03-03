@@ -1,8 +1,9 @@
 export { default as Badge } from './badge';
+export { default as Calendar } from './calendar';
 export { default as Button } from './button';
 export { default as FlashList } from './flash-list';
 export {
-  Calendar,
+  CalendarIcon,
   Home,
   People,
   Plus,

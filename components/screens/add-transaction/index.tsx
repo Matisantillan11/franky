@@ -1,11 +1,15 @@
 import * as icons from 'lucide-react-native/icons';
+import { useState } from 'react';
 import { ColorValue, View } from 'react-native';
 import { BlurView } from '~/components/blur-circle';
-import { Badge, Button, FlashList, Input, TextArea, ThemedText } from '~/components/ui';
+import { Badge, Button, Calendar, FlashList, Input, TextArea, ThemedText } from '~/components/ui';
 import { useCategoriesByType } from '~/libs/fetcher';
+import { transformValueToCurrency } from '~/shared/utils/text-utils';
 
 export default function AddTransactionScreen() {
   const { data: categories } = useCategoriesByType('expense');
+
+  const [amount, setAmount] = useState('');
 
   return (
     <View className="mb-12 h-full flex-1 justify-between">
@@ -13,7 +17,14 @@ export default function AddTransactionScreen() {
         <View className="h-10 w-full" />
         <View className="w-full items-center">
           <ThemedText className="text-center">Total amount</ThemedText>
-          <Input placeholder="$ 0.00" size="xl" variant="ghost" className="w-full" />
+          <Input
+            value={transformValueToCurrency(amount, true)}
+            onChangeText={setAmount}
+            placeholder="$ 0.00"
+            size="xl"
+            variant="ghost"
+            className="w-full"
+          />
         </View>
 
         <View className="h-full w-full flex-1 gap-10">
@@ -45,10 +56,11 @@ export default function AddTransactionScreen() {
           </View>
 
           <View className="w-full gap-4 px-4">
-            {/* Here we should add Calendar component */}
+            <Calendar label="Date" />
 
             <TextArea
               size="lg"
+              variant="ghost"
               label="Notes"
               placeholder="What was this for? Add any extra details..."
             />
