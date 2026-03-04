@@ -1,7 +1,9 @@
 export { default as Badge } from './badge';
-export { default as Calendar } from './calendar';
 export { default as Button } from './button';
+export { default as Calendar } from './calendar';
 export { default as FlashList } from './flash-list';
+export { Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
+export { useFieldArray, useForm, useFormContext } from './form/hooks';
 export {
   CalendarIcon,
   Home,

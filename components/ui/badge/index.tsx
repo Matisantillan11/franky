@@ -5,12 +5,10 @@ export default function Badge({ leftIcon, rightIcon, text, ...props }: BadgeProp
   return (
     <Button
       {...props}
+      size="icon"
       variant="outline"
       leftIcon={leftIcon}
-      rightIcon={rightIcon}
-      className="border-gray-gray50 flex-row items-center justify-center gap-2 border border-dashed px-4"
-    >
-      {text}
-    </Button>
+      className="border-gray-gray50 flex items-center justify-center border border-dashed pl-1"
+    />
   );
 }
