@@ -18,7 +18,7 @@ export default function AppProviders({ children }: { children: React.ReactNode }
           </FetcherProvider>
         </DatabaseProvider>
       </ThemeProvider>
-      <Toaster />
+      <Toaster theme="dark" />
       <StatusBar style="auto" />
     </GestureHandlerRootView>
   );

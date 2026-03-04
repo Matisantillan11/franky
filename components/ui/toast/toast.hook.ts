@@ -8,7 +8,7 @@ export const useToast = () => {
   const addToast = ({
     message,
     description,
-    duration = 1000,
+    duration = 1500,
     icon,
     type,
   }: {
