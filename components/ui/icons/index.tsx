@@ -1,11 +1,14 @@
 export { default as SuccessAnimatedIcon } from './animated-icons/success-animated-icon';
 export { default as CalendarIcon } from './calendar';
 export { default as Home } from './home';
+export { default as Money } from './money';
+export { default as Notifications } from './notifications';
 export { default as People } from './people';
 export { default as Plus } from './plus';
 export { default as Receipt } from './receipt';
 export { default as Saving } from './saving';
 export { default as Settings } from './settings';
+export { default as Shapes } from './shapes';
 export { default as Shrub } from './shrub';
 export { default as TrendingUp } from './trending-up';
 export { default as User } from './user';

@@ -2,11 +2,11 @@ import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { logError } from '~/libs';
-import { useCreateMonthlyBudget, useCreateSettings } from '~/libs/fetcher';
+import { useBudgets, useCreateSettings } from '~/libs/fetcher';
 import { ROUTES } from '~/shared/constants/routes';
 import { useStorage } from '~/shared/hooks/useStorage';
 import { BudgetType, CurrencyType, GoalType } from '~/shared/types/settings.types';
-import { clearValue } from '~/shared/utils/text-utils';
+import { transformCurrencyToString } from '~/shared/utils/text-utils';
 import StepFive from '../screens/onboarding/step-five';
 import StepFour from '../screens/onboarding/step-four';
 import StepOne from '../screens/onboarding/step-one';
@@ -30,11 +30,9 @@ export const OnboardingStepper = () => {
   const router = useRouter();
   const storage = useStorage({ id: ONBOARDING_STORAGE.id });
 
-  const {
-    mutateAsync: createMonthlyBudget,
-    isPending: isMonthlyBudgetCreating,
-    isError: isMonthlyBudgetError,
-  } = useCreateMonthlyBudget();
+  const { data } = useBudgets();
+
+  console.log({ data });
 
   const { mutateAsync: createUserSettings, isPending: isUserSettingsCreating } =
     useCreateSettings();
@@ -66,11 +64,7 @@ export const OnboardingStepper = () => {
     ),
     [STEPS.STEP_FOUR]: <StepFour currency={currency} updateCurrency={handleCurrencyChange} />,
     [STEPS.STEP_FIVE]: (
-      <StepFive
-        monthlyIncome={monthlyIncome}
-        updateMonthlyIncome={handleMonthlyIncomeChange}
-        isFieldError={isMonthlyBudgetError}
-      />
+      <StepFive monthlyIncome={monthlyIncome} updateMonthlyIncome={handleMonthlyIncomeChange} />
     ),
     [STEPS.STEP_SIX]: <StepSix goal={goal} updateGoal={handleGoalChange} />,
   });
@@ -85,61 +79,19 @@ export const OnboardingStepper = () => {
   });
 
   const isLatestStep = step === STEPS.STEP_SIX;
-  const isIncomeStep = step === STEPS.STEP_FIVE;
-
-  const handleCreateMonthlyBudget = async () => {
-    if (!monthlyIncome) return;
-
-    try {
-      const amount = Number(clearValue(monthlyIncome));
-      await createMonthlyBudget(
-        {
-          amount,
-        },
-        {
-          onSuccess: () => {
-            setStep(step + 1);
-            storage.store(ONBOARDING_STORAGE.keys.activeStep, step + 1);
-          },
-          onError: (error) => {
-            logError({
-              error: {
-                component: 'OnboardingStepper',
-                func: 'handleCreateMonthlyBudget',
-                module: 'onboarding',
-                message: '[ONBOARDING_ERROR] Error creating monthly budget',
-              },
-              tagName: 'ONBOARDING_ERROR',
-              errorName: 'ONBOARDING_ERROR',
-              context: { amount, error },
-            });
-          },
-        }
-      );
-    } catch (error) {
-      logError({
-        error: {
-          component: 'OnboardingStepper',
-          func: 'handleCreateMonthlyBudget',
-          module: 'onboarding',
-          message: '[ONBOARDING_ERROR] Catch error -> Error creating monthly budget',
-        },
-        tagName: 'ONBOARDING_ERROR',
-        errorName: 'ONBOARDING_ERROR',
-        context: { error },
-      });
-    }
-  };
 
   const handleSetupUserSettings = async () => {
     if (!currency || !budgetType || !goal) return;
 
     try {
+      const amount = Number(transformCurrencyToString(monthlyIncome));
+
       await createUserSettings(
         {
           currency,
           budgetType,
           goal,
+          monthlyIncome: amount,
         },
         {
           onSuccess: () => {
@@ -182,11 +134,6 @@ export const OnboardingStepper = () => {
       return;
     }
 
-    if (isIncomeStep) {
-      await handleCreateMonthlyBudget();
-      return;
-    }
-
     setStep(step + 1);
     storage.store(ONBOARDING_STORAGE.keys.activeStep, step + 1);
   };
@@ -205,8 +152,6 @@ export const OnboardingStepper = () => {
     }
   }, []);
 
-  const isLoading = isMonthlyBudgetCreating || isUserSettingsCreating;
-
   if (isOnboardingCompleted) {
     return <SuccessScreen actionText="Go to my dashboard" handleActionPress={handleActionPress} />;
   }
@@ -216,8 +161,12 @@ export const OnboardingStepper = () => {
       {stepDictionary[step]}
 
       <View className="w-full px-4">
-        <Button className="w-full" onPress={handleNextStep} disabled={isLoading}>
-          {isLoading ? <ActivityIndicator size="small" /> : stepActionTextDictionary[step]}
+        <Button className="w-full" onPress={handleNextStep} disabled={isUserSettingsCreating}>
+          {isUserSettingsCreating ? (
+            <ActivityIndicator size="small" />
+          ) : (
+            stepActionTextDictionary[step]
+          )}
         </Button>
       </View>
     </View>

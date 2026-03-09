@@ -18,11 +18,11 @@ export function useCategoryById(id: string) {
   });
 }
 
-export function useCategoriesByType(type: CategoryType) {
+export function useCategoriesByType(types: Array<CategoryType>) {
   return useQuery({
-    queryKey: queryKeys.categories.byType(type),
-    queryFn: () => categoriesRepository.findAll(type),
-    enabled: !!type,
+    queryKey: queryKeys.categories.byType(types),
+    queryFn: () => categoriesRepository.findAll(types),
+    enabled: !!types,
   });
 }
 

@@ -7,6 +7,7 @@ export const settings = sqliteTable('settings', {
     .primaryKey()
     .$defaultFn(() => generateUUID())
     .notNull(),
+  monthlyIncome: integer('monthly_income').notNull(),
   budgetType: text('budget_type', {
     enum: Object.values(BudgetType) as [BudgetType, ...BudgetType[]],
   }).notNull(),

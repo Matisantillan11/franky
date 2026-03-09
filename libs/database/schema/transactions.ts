@@ -1,5 +1,6 @@
 import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 import { generateUUID } from '../utils';
+import { budgets } from './budget';
 import { categories } from './categories';
 
 export const transactions = sqliteTable('transactions', {
@@ -11,6 +12,7 @@ export const transactions = sqliteTable('transactions', {
   amount: integer('amount').notNull(),
   type: text('type', { enum: ['income', 'expense'] }).notNull(),
   categoryId: text('category_id').references(() => categories.id, { onDelete: 'set null' }),
+  budgetId: text('budget_id').references(() => budgets.id, { onDelete: 'set null' }),
   description: text('description'),
   note: text('note'),
   dueDate: integer('due_date', { mode: 'timestamp_ms' }).notNull(),

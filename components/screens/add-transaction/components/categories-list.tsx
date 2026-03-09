@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { UseFormReturn } from 'react-hook-form';
 import { ColorValue, View } from 'react-native';
 import { Badge, FlashList, FormField, ThemedText } from '~/components/ui';
+import { Category } from '~/libs';
 import { useCategoriesByType } from '~/libs/fetcher';
 import { AddTransactionFormValues } from './form/types';
 
@@ -11,25 +12,15 @@ export default function CategoriesList<T extends UseFormReturn<AddTransactionFor
 }: {
   form: T;
 }) {
-  const { data: categories } = useCategoriesByType('expense');
+  const { data: categories } = useCategoriesByType(['expense', 'both']);
 
-  const allCategories = useMemo(() => {
+  const allCategories: Array<Category> = useMemo(() => {
     if (!categories) return [];
 
-    return [
-      ...categories.slice(0, 5),
-      {
-        type: 'both',
-        id: 'add-new-category-id',
-        name: 'New category',
-        icon: 'Plus',
-        color: '#6B7280',
-        isDefault: false,
-        createdAt: new Date(),
-        updatedAt: null,
-        deletedAt: null,
-      },
-    ];
+    const bothCategories = categories.filter((category) => category.type === 'both');
+    const expenseCategories = categories.slice(0, 4);
+
+    return [...expenseCategories, ...bothCategories];
   }, [categories]);
 
   return (

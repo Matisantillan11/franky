@@ -1,4 +1,5 @@
 export * from './client';
+export * from './hooks/use-budgets';
 export * from './hooks/use-categories';
 export * from './hooks/use-monthly-budgets';
 export * from './hooks/use-settings';

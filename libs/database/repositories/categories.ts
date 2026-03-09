@@ -1,13 +1,24 @@
-import { eq } from 'drizzle-orm';
+import { eq, or } from 'drizzle-orm';
 import { db } from '../client';
 import { categories } from '../schema';
-import type { Category, NewCategory } from '../types';
+import type { Category, CategoryFilter, NewCategory } from '../types';
+
+function buildWhereClause(filters: CategoryFilter) {
+  const conditions: any[] = [];
+
+  if (filters.type) {
+    filters.type.map((categoryType) => conditions.push(eq(categories.type, categoryType)));
+  }
+
+  return conditions.length > 0 ? or(...conditions) : undefined;
+}
 
 export const categoriesRepository = {
-  async findAll(type?: Category['type']): Promise<Category[]> {
+  async findAll(types?: Array<Category['type']>): Promise<Category[]> {
     const query = db.select().from(categories);
-    if (type) {
-      return query.where(eq(categories.type, type));
+    if (types) {
+      const where = buildWhereClause({ type: types });
+      return query.where(where);
     }
     return query;
   },

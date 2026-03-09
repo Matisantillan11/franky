@@ -7,10 +7,13 @@ export { useFieldArray, useForm, useFormContext } from './form/hooks';
 export {
   CalendarIcon,
   Home,
+  Money,
+  Notifications,
   People,
   Plus,
   Receipt,
   Saving,
+  Shapes,
   Shrub,
   TrendingUp,
   User,

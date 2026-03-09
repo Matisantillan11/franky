@@ -1,13 +1,19 @@
 import { eq } from 'drizzle-orm';
 import { db } from '../client';
-import { categories } from '../schema';
+import { budgets, categories } from '../schema';
+import { BudgetType } from '../types';
 import type { LucideIconName } from '../types/lucide-icon-name';
 
 type SeedCategory = {
   name: string;
-  type: 'income' | 'expense';
+  type: 'income' | 'expense' | 'both';
   icon: LucideIconName;
   color: string;
+};
+
+type SeedBudget = {
+  type: BudgetType;
+  createdAt: Date;
 };
 
 const DEFAULT_CATEGORIES: SeedCategory[] = [
@@ -26,10 +32,11 @@ const DEFAULT_CATEGORIES: SeedCategory[] = [
   { name: 'Shopping', type: 'expense', icon: 'ShoppingBag', color: '#14B8A6' },
   { name: 'Education', type: 'expense', icon: 'BookOpen', color: '#06B6D4' },
   { name: 'Utilities', type: 'expense', icon: 'Zap', color: '#84CC16' },
-  { name: 'Other Expense', type: 'expense', icon: 'Circle', color: '#6B7280' },
+  { name: 'New category', type: 'both', icon: 'Plus', color: '#6B7280' },
+  //
 ];
 
-export async function seedDefaultCategories(): Promise<void> {
+async function seedDefaultCategories(): Promise<void> {
   const existing = await db
     .select({ id: categories.id })
     .from(categories)
@@ -47,4 +54,21 @@ export async function seedDefaultCategories(): Promise<void> {
       createdAt: now,
     }))
   );
+}
+
+async function seedInitialBudget(): Promise<void> {
+  const existingBudget = await db.select({ id: budgets.id }).from(budgets).limit(1);
+
+  if (existingBudget.length > 0) return;
+  const now = new Date();
+
+  const newBudget: SeedBudget = {
+    type: 'private',
+    createdAt: now,
+  };
+  await db.insert(budgets).values(newBudget);
+}
+
+export async function seedDatabase(): Promise<void> {
+  await Promise.all([seedDefaultCategories(), seedInitialBudget()]);
 }

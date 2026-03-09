@@ -3,14 +3,22 @@ import { cn } from '~/shared/utils/tailwind';
 import { Button, ThemedText } from '../ui';
 import { BudgetCardProps } from './types';
 
-export default function Card({ icon, title, description, className, ...rest }: BudgetCardProps) {
+export default function Card({
+  icon,
+  title,
+  description,
+  className,
+  variant,
+  ...rest
+}: BudgetCardProps) {
   return (
     <Button
       {...rest}
       variant="ghost"
       className={cn(
-        'bg-brand-brand800/60 rounded-xl p-4',
+        'p-4',
         'disabled:bg-brand-600/20 disabled:border-2 disabled:border-gray-800',
+        variant === 'ghost' ? 'bg-brand-brand900 rounded-none' : 'bg-brand-brand800/60 rounded-xl',
         className
       )}
     >

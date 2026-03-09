@@ -2,7 +2,7 @@ import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 import React, { useEffect, useState } from 'react';
 import { db } from './client';
 import migrations from './migrations/migrations';
-import { seedDefaultCategories } from './seed/seed';
+import { seedDatabase } from './seed/seed';
 
 type Props = {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ export function DatabaseProvider({ children, fallback = null }: Props) {
 
   useEffect(() => {
     if (!success) return;
-    seedDefaultCategories().then(() => setSeeded(true));
+    seedDatabase().then(() => setSeeded(true));
   }, [success]);
 
   if (error) throw error;

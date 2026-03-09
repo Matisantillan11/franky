@@ -2,7 +2,7 @@ export const queryKeys = {
   categories: {
     all: ['categories'] as const,
     byId: (id: string) => ['categories', id] as const,
-    byType: (type: string) => ['categories', 'type', type] as const,
+    byType: (types: Array<string>) => ['categories', 'types', types] as const,
   },
   transactions: {
     all: ['transactions'] as const,
@@ -17,5 +17,9 @@ export const queryKeys = {
   },
   settings: {
     all: ['settings'] as const,
+  },
+  budgets: {
+    all: ['budgets'] as const,
+    byId: (id: string) => ['budgets', id] as const,
   },
 } as const;
