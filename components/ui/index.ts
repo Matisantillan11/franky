@@ -1,4 +1,7 @@
 export { default as Badge } from './badge';
+export { default as InsightCard } from './insight-card';
+export { default as DonutChart } from './donut-chart';
+export { default as ExpenseCard } from './expense-card';
 export { default as Button } from './button';
 export { default as Calendar } from './calendar';
 export { default as FlashList } from './flash-list';

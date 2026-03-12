@@ -22,3 +22,13 @@ export const transformCurrencyToString = (value?: string) => {
   if (!value) return '';
   return value.replace(/\D/g, '');
 };
+
+export const transformValueToInteger = (value?: number) => {
+  if (!value || typeof value !== 'number') return value;
+  const stringValue = value.toString();
+  const valueWithoutDecimals = Number(stringValue.slice(0, -2));
+
+  if (isNaN(valueWithoutDecimals)) return value;
+
+  return valueWithoutDecimals;
+};

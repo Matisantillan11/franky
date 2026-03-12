@@ -1,14 +1,46 @@
+import { PressableStateCallbackType, StyleProp, ViewStyle } from 'react-native';
+import { cn } from '~/shared/utils/tailwind';
 import Button from '../button';
+import ThemedText from '../themed-text';
 import { BadgeProps } from './types';
 
-export default function Badge({ leftIcon, rightIcon, text, ...props }: BadgeProps) {
+export default function Badge({
+  leftIcon,
+  rightIcon,
+  label,
+  color,
+  variant = 'outline',
+  className,
+  style,
+  ...props
+}: BadgeProps) {
+  const isIconOnly = !label;
+
+  const colorBg = label && color ? { backgroundColor: color + '20' } : undefined;
+
+  const mergedStyle = (state: PressableStateCallbackType): StyleProp<ViewStyle> => {
+    const external = typeof style === 'function' ? style(state) : style;
+    return [colorBg, external];
+  };
+
   return (
     <Button
       {...props}
-      size="icon"
-      variant="outline"
+      size={isIconOnly ? 'icon' : 'sm'}
+      variant={variant}
       leftIcon={leftIcon}
-      className="border-gray-gray50 flex items-center justify-center border border-dashed pl-1"
-    />
+      className={cn(
+        isIconOnly && 'border-gray-gray50 border border-dashed',
+        !isIconOnly && 'px-4 py-2',
+        className
+      )}
+      style={mergedStyle}
+    >
+      {label ? (
+        <ThemedText className="text-sm font-semibold" style={color ? { color } : undefined}>
+          {label}
+        </ThemedText>
+      ) : undefined}
+    </Button>
   );
 }
