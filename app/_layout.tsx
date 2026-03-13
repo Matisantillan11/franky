@@ -13,6 +13,8 @@ function RootLayout() {
         <Stack.Screen name="(home)" />
         <Stack.Screen name="add-transaction" options={{ presentation: 'modal' }} />
         <Stack.Screen name="add-category" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="transactions/[categoryId]" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="all-categories" options={{ presentation: 'modal' }} />
       </Stack>
     </AppProviders>
   );

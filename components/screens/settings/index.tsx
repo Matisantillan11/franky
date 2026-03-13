@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import Card from '~/components/card';
 import { Money, Notifications, Shapes, ThemedText, Wallet } from '~/components/ui';
@@ -6,6 +7,7 @@ import { theme } from '~/shared/constants/theme';
 import { cn } from '~/shared/utils/tailwind';
 
 export default function SettingsScreen() {
+  const router = useRouter();
   const { data } = useSettings();
 
   return (
@@ -56,6 +58,7 @@ export default function SettingsScreen() {
               }
               title="Categories"
               description="Manage expense and income categories"
+              onPress={() => router.push('/all-categories')}
             />
             <Card
               disabled={false}

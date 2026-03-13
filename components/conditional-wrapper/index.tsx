@@ -5,9 +5,9 @@ export default function ConditionalWrapper({
   children,
 }: {
   conditional?: boolean;
-  children: ReactNode;
+  children: ReactNode | undefined;
 }) {
   if (conditional) return children;
 
-  return null;
+  return undefined;
 }

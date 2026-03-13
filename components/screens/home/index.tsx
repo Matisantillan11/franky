@@ -5,7 +5,7 @@ import { Badge, InsightCard, ThemedText } from '~/components/ui';
 import { useSettings, useTransactions } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
 import { cn } from '~/shared/utils/tailwind';
-import { transformValueToCurrency, transformValueToInteger } from '~/shared/utils/text-utils';
+import { transformValueToCurrency } from '~/shared/utils/text-utils';
 import TransactionsList from './transactions-list';
 
 export default function HomeScreen() {
@@ -18,9 +18,6 @@ export default function HomeScreen() {
     if (!transactions) return 0;
     return transactions.reduce((acc, transaction) => {
       if (transaction.type === 'expense' && transaction.amount) {
-        if (transaction.amount.toString().length > 4) {
-          return acc + (transformValueToInteger(transaction.amount) as number);
-        }
         return acc + transaction.amount;
       }
       return acc;
@@ -29,27 +26,24 @@ export default function HomeScreen() {
 
   const remainingMonthlyBudget = useMemo(() => {
     if (!budget) return 0;
-    if (!transactions) return transformValueToInteger(budget) as number;
+    if (!transactions) return transformValueToCurrency(budget.toString(), true);
 
-    const normalisedBudget = transformValueToInteger(budget) as number;
-    const isTotalExpensesBiggerThanNormalisedBudget = totalExpenses > normalisedBudget;
-    const restValue = isTotalExpensesBiggerThanNormalisedBudget
-      ? totalExpenses - normalisedBudget
-      : normalisedBudget - totalExpenses;
+    const isTotalExpensesBiggerThanBudget = totalExpenses > budget;
+    const restValue = isTotalExpensesBiggerThanBudget
+      ? totalExpenses - budget
+      : budget - totalExpenses;
 
-    const remainingMoney = transformValueToCurrency(restValue.toString());
-    return isTotalExpensesBiggerThanNormalisedBudget ? `- ${remainingMoney} ` : remainingMoney;
-  }, [userSettings, transactions, totalExpenses]);
+    const remainingMoney = transformValueToCurrency(restValue.toString(), true);
+    return isTotalExpensesBiggerThanBudget ? `- ${remainingMoney} ` : remainingMoney;
+  }, [budget, transactions, totalExpenses]);
 
   const spentPercentage = useMemo(() => {
     if (!budget) return 0;
-    const normalisedBudget = transformValueToInteger(budget as number) as number;
-    if (!normalisedBudget) return 0;
-    return (totalExpenses / normalisedBudget) * 100;
+    return (totalExpenses / budget) * 100;
   }, [budget, totalExpenses]);
 
   return (
-    <SafeAreaView edges={['top']}>
+    <SafeAreaView edges={['top', 'bottom']}>
       <View className="items-center justify-center gap-2">
         <ThemedText>Remaining monthly budget</ThemedText>
         <ThemedText
@@ -63,13 +57,13 @@ export default function HomeScreen() {
         </ThemedText>
         <View className="flex-row gap-3">
           <Badge
-            label={`Income: ${transformValueToCurrency(budget?.toString()?.slice(0, -2) ?? '0')}`}
+            label={`Income: ${transformValueToCurrency(budget?.toString() ?? '0', true)}`}
             color={theme.brand.brand400}
             variant="default"
             className="border-brand-brand500 border"
           />
           <Badge
-            label={`Spent: ${transformValueToCurrency(totalExpenses.toString())}`}
+            label={`Spent: ${transformValueToCurrency(totalExpenses.toString(), true)}`}
             color={theme.error.error400}
             variant="default"
             className="border-error-error500 border"

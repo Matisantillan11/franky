@@ -30,7 +30,7 @@ export default function Badge({
       variant={variant}
       leftIcon={leftIcon}
       className={cn(
-        isIconOnly && 'border-gray-gray50 border border-dashed',
+        isIconOnly && 'border-gray-gray50 justify-center border border-dashed px-0!',
         !isIconOnly && 'px-4 py-2',
         className
       )}

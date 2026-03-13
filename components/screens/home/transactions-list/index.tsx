@@ -1,10 +1,19 @@
+import { useRouter } from 'expo-router';
 import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import ConditionalWrapper from '~/components/conditional-wrapper';
 import { ExpenseCard, FlashList, ThemedText } from '~/components/ui';
 import { useTransactions } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
-import { transformValueToCurrency, transformValueToInteger } from '~/shared/utils/text-utils';
+import { transformValueToCurrency } from '~/shared/utils/text-utils';
+
+type GroupedExpense = {
+  total: number;
+  color: string;
+  name: string;
+  icon: string;
+  categoryId: string;
+};
 
 export default function TransactionsList({
   budget,
@@ -13,6 +22,7 @@ export default function TransactionsList({
   budget: number;
   totalExpenses: number;
 }) {
+  const router = useRouter();
   const { data: transactions } = useTransactions();
   const userHasTransactions = transactions && transactions?.length > 0;
 
@@ -20,10 +30,7 @@ export default function TransactionsList({
     (value?: number) => {
       if (!budget || !value) return theme.brand.brand700;
 
-      const budgetWithoutDecimals = transformValueToInteger(budget as number);
-
-      if (!budgetWithoutDecimals) return theme.brand.brand700;
-      const percentage = (value / budgetWithoutDecimals) * 100;
+      const percentage = (value / budget) * 100;
 
       if (percentage > 75) return theme.error.error700 + '6D';
       if (percentage > 50) return theme.warning.warning700 + '6D';
@@ -35,12 +42,7 @@ export default function TransactionsList({
   const groupedExpenses = useMemo(() => {
     if (!transactions) return [];
 
-    const grouped = transactions.reduce<
-      Record<
-        string,
-        { total: number; color: string; name: string; icon: string; categoryId: string }
-      >
-    >((acc, t) => {
+    const grouped = transactions.reduce<Record<string, GroupedExpense>>((acc, t) => {
       if (t.type !== 'expense') return acc;
       const key = t.categoryId ?? 'uncategorized';
       if (!acc[key]) {
@@ -56,32 +58,36 @@ export default function TransactionsList({
       }
 
       if (acc[key]) {
-        acc[key].total +=
-          t.amount.toString().length > 4 ? (transformValueToInteger(t.amount) as number) : t.amount;
+        acc[key].total += t.amount;
       }
 
       return acc;
     }, {});
 
-    return Object.values(grouped);
+    return Object.values(grouped).sort((a, b) => b.total - a.total);
   }, [transactions, getFrontColor]);
 
   return (
     <ConditionalWrapper conditional={userHasTransactions}>
-      <View className="mt-4 h-full gap-6 p-4 pb-72">
-        <ThemedText size="subtitle" variant="primary">
-          Recent transactions
-        </ThemedText>
-        <View className="flex-1 gap-6 pb-96">
+      <View className="h-full pb-72">
+        <View className="flex-1 gap-6 px-4 pb-80">
           <FlashList
+            ListHeaderComponent={
+              <View className="my-4 flex-row">
+                <ThemedText size="subtitle" variant="primary">
+                  Recent transactions
+                </ThemedText>
+              </View>
+            }
             data={groupedExpenses}
             renderItem={({ item }) => (
               <ExpenseCard
                 icon={item.icon}
                 category={item.name}
-                amount={transformValueToCurrency(item.total.toString())}
+                amount={transformValueToCurrency(item.total.toString(), true)}
                 color={item.color}
                 progress={item.total / totalExpenses}
+                onPress={() => router.push(`/transactions/${item.categoryId}`)}
               />
             )}
             keyExtractor={(item) => item.categoryId}
