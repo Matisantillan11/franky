@@ -1,4 +1,4 @@
-import { Calendar, Receipt, Saving, Shrub } from '~/components/ui';
+import { CalendarIcon, Receipt, Saving, Shrub } from '~/components/ui';
 import { theme } from '~/shared/constants/theme';
 import { GoalType } from '~/shared/types/settings.types';
 
@@ -7,7 +7,7 @@ export const GOAL_OPTIONS = [
     id: GoalType.PLAN,
     title: 'Plan my monthly expenses',
     description: 'Organize bills and recurring costs.',
-    icon: <Calendar color={theme.gray.gray100} />,
+    icon: <CalendarIcon color={theme.gray.gray100} />,
     disabled: false,
   },
   {

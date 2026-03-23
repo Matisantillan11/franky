@@ -9,6 +9,7 @@ export default function Card({
   description,
   className,
   variant,
+  rightIcon,
   ...rest
 }: BudgetCardProps) {
   return (
@@ -16,19 +17,23 @@ export default function Card({
       {...rest}
       variant="ghost"
       className={cn(
-        'p-4',
+        'rounded-xl p-4',
         'disabled:bg-brand-600/20 disabled:border-2 disabled:border-gray-800',
-        variant === 'ghost' ? 'bg-brand-brand900 rounded-none' : 'bg-brand-brand800/60 rounded-xl',
+        variant === 'ghost' ? 'bg-brand-brand900' : 'bg-brand-brand800/60',
         className
       )}
     >
       <View className="w-full flex-row items-center justify-between">
-        {icon}
+        <View className="flex-row">
+          {icon}
 
-        <View className="w-full pr-10 pl-4">
-          <ThemedText variant="primary">{title}</ThemedText>
-          <ThemedText>{description}</ThemedText>
+          <View className="pl-4">
+            <ThemedText variant="primary">{title}</ThemedText>
+            <ThemedText>{description}</ThemedText>
+          </View>
         </View>
+
+        {rightIcon}
       </View>
     </Button>
   );

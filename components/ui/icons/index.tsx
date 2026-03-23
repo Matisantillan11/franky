@@ -10,6 +10,7 @@ export { default as Saving } from './saving';
 export { default as Settings } from './settings';
 export { default as Shapes } from './shapes';
 export { default as Shrub } from './shrub';
+export { default as Trash } from './trash';
 export { default as TrendingUp } from './trending-up';
 export { default as User } from './user';
 export { default as Wallet } from './wallet';

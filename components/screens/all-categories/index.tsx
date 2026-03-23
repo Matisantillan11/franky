@@ -1,8 +1,8 @@
 import { useRouter } from 'expo-router';
-import * as icons from 'lucide-react-native/icons';
 import { useMemo } from 'react';
-import { ColorValue, View } from 'react-native';
+import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import CategoryCard from '~/components/category-card';
 import ModalScreenNodge from '~/components/modal-screen-nodge';
 import { Button, FlashList, ThemedText } from '~/components/ui';
 import { Category, CategoryType } from '~/libs';
@@ -18,34 +18,6 @@ const TYPE_LABELS: Record<string, string> = {
 type HeaderItem = { type: 'header'; title: string };
 type CategoryItem = { type: 'item'; data: Category };
 type FlatItem = HeaderItem | CategoryItem;
-
-function CategoryCard({ category, onPress }: { category: Category; onPress: () => void }) {
-  const LucideIcon = icons[category.icon as keyof typeof icons] as React.ComponentType<{
-    size?: number;
-    color?: ColorValue;
-  }>;
-
-  return (
-    <Button
-      variant="ghost"
-      onPress={onPress}
-      leftIcon={
-        <View
-          className="h-10 w-10 items-center justify-center rounded-full"
-          style={{ backgroundColor: (category.color ?? '#fff') + '30' }}
-        >
-          {LucideIcon && <LucideIcon size={20} color={category.color as ColorValue} />}
-        </View>
-      }
-      className="w-full justify-start gap-4 rounded-2xl px-4 py-4"
-      style={{ backgroundColor: (category.color ?? '#fff') + '18' }}
-    >
-      <ThemedText variant="primary" className="h-fulltext-base font-semibold">
-        {category.name}
-      </ThemedText>
-    </Button>
-  );
-}
 
 export default function AllCategoriesScreen() {
   const { data: categories } = useCategoriesByType(['income', 'expense']);
@@ -78,6 +50,10 @@ export default function AllCategoriesScreen() {
     router.back();
   }
 
+  const handleRedirectToAddCategory = () => {
+    router.push('/add-category');
+  };
+
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1">
       <ModalScreenNodge />
@@ -85,7 +61,7 @@ export default function AllCategoriesScreen() {
         <View className="flex-1">
           <FlashList
             ListHeaderComponent={
-              <ThemedText variant="primary" className="px-4 pb-4 text-xl font-bold">
+              <ThemedText variant="primary" className="py-4 text-xl font-bold">
                 Categories
               </ThemedText>
             }
@@ -118,6 +94,9 @@ export default function AllCategoriesScreen() {
               </View>
             }
           />
+        </View>
+        <View className="mx-4 mb-16">
+          <Button onPress={handleRedirectToAddCategory}>Add new category</Button>
         </View>
       </View>
     </SafeAreaView>
