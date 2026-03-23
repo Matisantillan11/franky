@@ -15,6 +15,10 @@ export default function SettingsScreen() {
 
   const monthlyBudget = transformValueToCurrency(settings?.monthlyIncome?.toString() ?? '0', true);
 
+  const navigateToUpdateCurrency = () => {
+    router.push('/update-currency');
+  };
+
   return (
     <ScrollView contentInsetAdjustmentBehavior="automatic" className="flex-1 p-4">
       <ThemedText variant="primary" className="text-2xl font-bold">
@@ -29,6 +33,7 @@ export default function SettingsScreen() {
               <Card
                 disabled={false}
                 variant="ghost"
+                onPress={navigateToUpdateCurrency}
                 icon={
                   <View className={cn('bg-brand-brand700 rounded-xl p-2')}>
                     <Money color={theme.brand.brand500} />

@@ -4,6 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Badge, InsightCard, ThemedText } from '~/components/ui';
 import { useSettings, useTransactions } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
+import { CurrencyType } from '~/shared/types/settings.types';
+import { getCurrencyWithoutSuffix } from '~/shared/utils/money-utils';
 import { cn } from '~/shared/utils/tailwind';
 import { transformValueToCurrency } from '~/shared/utils/text-utils';
 import TransactionsList from './transactions-list';
@@ -13,6 +15,7 @@ export default function HomeScreen() {
   const { data: transactions } = useTransactions();
 
   const budget = userSettings?.monthlyIncome as number;
+  const currency = getCurrencyWithoutSuffix(userSettings?.currency as CurrencyType);
 
   const totalExpenses = useMemo(() => {
     if (!transactions) return 0;
@@ -34,7 +37,9 @@ export default function HomeScreen() {
       : budget - totalExpenses;
 
     const remainingMoney = transformValueToCurrency(restValue.toString(), true);
-    return isTotalExpensesBiggerThanBudget ? `- ${remainingMoney} ` : remainingMoney;
+    return isTotalExpensesBiggerThanBudget
+      ? `- ${currency} ${remainingMoney} `
+      : `${currency} ${remainingMoney}`;
   }, [budget, transactions, totalExpenses]);
 
   const spentPercentage = useMemo(() => {
@@ -57,13 +62,13 @@ export default function HomeScreen() {
         </ThemedText>
         <View className="flex-row gap-3">
           <Badge
-            label={`Income: ${transformValueToCurrency(budget?.toString() ?? '0', true)}`}
+            label={`Income: ${currency} ${transformValueToCurrency(budget?.toString() ?? '0', true)}`}
             color={theme.brand.brand400}
             variant="default"
             className="border-brand-brand500 border"
           />
           <Badge
-            label={`Spent: ${transformValueToCurrency(totalExpenses.toString(), true)}`}
+            label={`Spent: ${currency} ${transformValueToCurrency(totalExpenses.toString(), true)}`}
             color={theme.error.error400}
             variant="default"
             className="border-error-error500 border"

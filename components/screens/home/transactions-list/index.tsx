@@ -3,8 +3,10 @@ import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import ConditionalWrapper from '~/components/conditional-wrapper';
 import { ExpenseCard, FlashList, ThemedText } from '~/components/ui';
-import { useTransactions } from '~/libs/fetcher';
+import { useSettings, useTransactions } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
+import { CurrencyType } from '~/shared/types/settings.types';
+import { getCurrencyWithoutSuffix } from '~/shared/utils/money-utils';
 import { transformValueToCurrency } from '~/shared/utils/text-utils';
 
 type GroupedExpense = {
@@ -23,8 +25,12 @@ export default function TransactionsList({
   totalExpenses: number;
 }) {
   const router = useRouter();
+
   const { data: transactions } = useTransactions();
+  const { data: userSettings } = useSettings();
+
   const userHasTransactions = transactions && transactions?.length > 0;
+  const currency = getCurrencyWithoutSuffix(userSettings?.currency as CurrencyType);
 
   const getFrontColor = useCallback(
     (value?: number) => {
@@ -84,7 +90,7 @@ export default function TransactionsList({
               <ExpenseCard
                 icon={item.icon}
                 category={item.name}
-                amount={transformValueToCurrency(item.total.toString(), true)}
+                amount={`${currency} ${transformValueToCurrency(item.total.toString(), true)}`}
                 color={item.color}
                 progress={item.total / totalExpenses}
                 onPress={() => router.push(`/transactions/${item.categoryId}`)}

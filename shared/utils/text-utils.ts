@@ -13,7 +13,7 @@ export const transformValueToCurrency = (value: string, withDecimal?: boolean) =
   const integerPart = padded.slice(0, -2).replace(/^0+(?!$)/, '') || '0';
   const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   const decimalPart = padded.slice(-2);
-  return `$ ${formattedIntegerPart},${decimalPart}`;
+  return `${formattedIntegerPart},${decimalPart}`;
 };
 
 export const transformCurrencyToString = (value?: string) => {

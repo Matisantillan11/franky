@@ -18,3 +18,22 @@ export function getCurrencySymbol(currency: CurrencyType) {
       return '$ USD';
   }
 }
+
+export function getCurrencyWithoutSuffix(currency: CurrencyType) {
+  switch (currency) {
+    case CurrencyType.DOLLAR:
+      return '$';
+    case CurrencyType.EURO:
+      return '€';
+    case CurrencyType.ARGENTINE_PESO:
+      return '$';
+    case CurrencyType.POUND:
+      return '£';
+    case CurrencyType.YEN:
+      return '¥';
+    case CurrencyType.RUPEE:
+      return '₹';
+    default:
+      return '$';
+  }
+}
