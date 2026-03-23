@@ -5,7 +5,7 @@ import { Button, Money, Notifications, Shapes, ThemedText, Trash, Wallet } from 
 import { useSettings } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
 import { CurrencyType } from '~/shared/types/settings.types';
-import { getCurrencySymbol } from '~/shared/utils/money-utils';
+import { getCurrencySymbol, getCurrencyWithoutSuffix } from '~/shared/utils/money-utils';
 import { cn } from '~/shared/utils/tailwind';
 import { transformValueToCurrency } from '~/shared/utils/text-utils';
 
@@ -16,7 +16,11 @@ export default function SettingsScreen() {
   const monthlyBudget = transformValueToCurrency(settings?.monthlyIncome?.toString() ?? '0', true);
 
   const navigateToUpdateCurrency = () => {
-    router.push('/update-currency');
+    router.navigate('/update-currency');
+  };
+
+  const navigateToUpdateMonthlyIncome = () => {
+    router.navigate('/update-monthly-income');
   };
 
   return (
@@ -55,9 +59,14 @@ export default function SettingsScreen() {
                     <Wallet color={theme.brand.brand500} />
                   </View>
                 }
+                onPress={navigateToUpdateMonthlyIncome}
                 title="Monthly Income"
                 description="See your budget baseline"
-                rightIcon={<ThemedText>{monthlyBudget}</ThemedText>}
+                rightIcon={
+                  <ThemedText>
+                    {getCurrencyWithoutSuffix(settings?.currency as CurrencyType)} {monthlyBudget}
+                  </ThemedText>
+                }
               />
             </View>
           </View>

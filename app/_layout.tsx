@@ -12,6 +12,7 @@ function RootLayout() {
         <Stack.Screen name="onboarding" />
         <Stack.Screen name="(home)" />
         <Stack.Screen name="update-currency" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="update-monthly-income" options={{ presentation: 'modal' }} />
         <Stack.Screen name="add-transaction" options={{ presentation: 'modal' }} />
         <Stack.Screen name="add-category" options={{ presentation: 'modal' }} />
         <Stack.Screen name="transactions/[categoryId]" options={{ presentation: 'modal' }} />

@@ -37,7 +37,7 @@ export default function UpdateCurrencyScreen() {
       { id: settings.id, input: { currency } },
       {
         onSuccess: () => {
-          router.navigate('/(home)/settings');
+          router.back();
         },
         onError: () => {
           addToast({
