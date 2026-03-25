@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { logError } from '~/libs';
-import { useBudgets, useCreateSettings } from '~/libs/fetcher';
+import { useCreateSettings } from '~/libs/fetcher';
 import { ROUTES } from '~/shared/constants/routes';
 import { useStorage } from '~/shared/hooks/useStorage';
 import { BudgetType, CurrencyType, GoalType } from '~/shared/types/settings.types';
@@ -29,10 +29,6 @@ export const OnboardingStepper = () => {
 
   const router = useRouter();
   const storage = useStorage({ id: ONBOARDING_STORAGE.id });
-
-  const { data } = useBudgets();
-
-  console.log({ data });
 
   const { mutateAsync: createUserSettings, isPending: isUserSettingsCreating } =
     useCreateSettings();

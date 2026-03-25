@@ -17,6 +17,8 @@ function RootLayout() {
         <Stack.Screen name="add-category" options={{ presentation: 'modal' }} />
         <Stack.Screen name="transactions/[categoryId]" options={{ presentation: 'modal' }} />
         <Stack.Screen name="all-categories" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="icon-picker" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="color-picker" options={{ presentation: 'modal' }} />
       </Stack>
     </AppProviders>
   );
