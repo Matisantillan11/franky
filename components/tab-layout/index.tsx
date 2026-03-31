@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import { theme } from '~/shared/constants/theme';
 import { cn } from '~/shared/utils/tailwind';
 import { ThemedText } from '../ui';
-import { Home, Plus, Settings, TrendingUp, Wallet } from '../ui/icons';
+import { Home, Settings, TrendingUp, Wallet } from '../ui/icons';
 
 const ButtonTab = ({
   isSelected,
@@ -49,11 +49,11 @@ export default function TabLayout() {
             <Wallet color={isBudgetTabSelected ? theme.brand.brand600 : theme.gray.gray100} />
           </ButtonTab>
         </TabTrigger>
-        <TabTrigger name="add" href="/(home)/add" onPress={() => handleTabPress('add')}>
+        {/* <TabTrigger name="add" href="/(home)/add" onPress={() => handleTabPress('add')}>
           <View className="bg-brand-brand600 items-center justify-between rounded-full p-2">
             <Plus color={theme.gray.gray100} />
           </View>
-        </TabTrigger>
+        </TabTrigger> */}
         <TabTrigger name="stats" href="/(home)/stats" onPress={() => handleTabPress('stats')}>
           <ButtonTab isSelected={isStatsTabSelected} label="Stats">
             <TrendingUp color={isStatsTabSelected ? theme.brand.brand600 : theme.gray.gray100} />

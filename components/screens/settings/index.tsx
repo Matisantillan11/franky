@@ -1,7 +1,16 @@
 import { useRouter } from 'expo-router';
 import { ScrollView, View } from 'react-native';
 import Card from '~/components/card';
-import { Button, Money, Notifications, Shapes, ThemedText, Trash, Wallet } from '~/components/ui';
+import {
+  BackArrow,
+  Button,
+  Money,
+  Notifications,
+  Shapes,
+  ThemedText,
+  Trash,
+  Wallet,
+} from '~/components/ui';
 import { useSettings } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
 import { CurrencyType } from '~/shared/types/settings.types';
@@ -24,13 +33,20 @@ export default function SettingsScreen() {
   };
 
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic" className="flex-1 p-4">
-      <ThemedText variant="primary" className="text-2xl font-bold">
-        Settings
-      </ThemedText>
-
-      <View className="h-full flex-col justify-between">
-        <View className="flex-col gap-4 py-4">
+    <ScrollView contentInsetAdjustmentBehavior="automatic" className="flex-1">
+      <View className="flex-row items-center gap-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          leftIcon={<BackArrow color={theme.gray.gray400} size={20} />}
+          onPress={() => router.back()}
+        />
+        <ThemedText variant="primary" className="text-2xl font-bold">
+          Settings
+        </ThemedText>
+      </View>
+      <View className="mt-10 h-full flex-col justify-between p-4">
+        <View className="h-full flex-col gap-4">
           <View className="gap-4">
             <ThemedText variant="secondary">Account</ThemedText>
             <View>
@@ -103,7 +119,7 @@ export default function SettingsScreen() {
 
         <Button
           leftIcon={<Trash size={20} color={theme.error.error500} />}
-          className="bg-error-error500/30 active:bg-error-error500/20 mx-10 mt-32"
+          className="bg-error-error500/30 active:bg-error-error500/20 mx-10 mt-16"
         >
           <ThemedText className="text-error-error500">Clear all my data</ThemedText>
         </Button>

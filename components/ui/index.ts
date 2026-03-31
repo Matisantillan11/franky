@@ -7,6 +7,7 @@ export { default as FlashList } from './flash-list';
 export { Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from './form';
 export { useFieldArray, useForm, useFormContext } from './form/hooks';
 export {
+  BackArrow,
   CalendarIcon,
   Home,
   Money,
@@ -15,6 +16,7 @@ export {
   Plus,
   Receipt,
   Saving,
+  Settings,
   Shapes,
   Shrub,
   Trash,

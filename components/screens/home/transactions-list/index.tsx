@@ -75,7 +75,7 @@ export default function TransactionsList({
 
   return (
     <ConditionalWrapper conditional={userHasTransactions}>
-      <View className="h-full pb-72">
+      <View className="h-full px-2 pb-72">
         <View className="flex-1 gap-6 px-4 pb-80">
           <FlashList
             ListHeaderComponent={

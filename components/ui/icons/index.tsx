@@ -1,4 +1,5 @@
 export { default as SuccessAnimatedIcon } from './animated-icons/success-animated-icon';
+export { default as BackArrow } from './back-arrow';
 export { default as CalendarIcon } from './calendar';
 export { default as Home } from './home';
 export { default as Money } from './money';

@@ -1,6 +1,11 @@
+import { Stack } from 'expo-router';
 import React from 'react';
-import { TabLayout } from '~/components';
 
 export default function HomeLayout() {
-  return <TabLayout />;
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="settings" />
+    </Stack>
+  );
 }

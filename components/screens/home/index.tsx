@@ -1,7 +1,8 @@
+import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Badge, InsightCard, ThemedText } from '~/components/ui';
+import { Badge, Button, InsightCard, Plus, Settings, ThemedText } from '~/components/ui';
 import { useSettings, useTransactions } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
 import { CurrencyType } from '~/shared/types/settings.types';
@@ -13,6 +14,8 @@ import TransactionsList from './transactions-list';
 export default function HomeScreen() {
   const { data: userSettings } = useSettings();
   const { data: transactions } = useTransactions();
+
+  const router = useRouter();
 
   const budget = userSettings?.monthlyIncome as number;
   const currency = getCurrencyWithoutSuffix(userSettings?.currency as CurrencyType);
@@ -47,9 +50,17 @@ export default function HomeScreen() {
     return (totalExpenses / budget) * 100;
   }, [budget, totalExpenses]);
 
+  const handleAddTransaction = () => {
+    router.push('/add-transaction');
+  };
+
+  const handleSettingsPress = () => {
+    router.push('/settings');
+  };
+
   return (
-    <SafeAreaView edges={['top', 'bottom']}>
-      <View className="items-center justify-center gap-2">
+    <SafeAreaView edges={['top', 'bottom']} className="flex-1">
+      <View className="items-center justify-center gap-2 px-6 pt-10">
         <ThemedText>Remaining monthly budget</ThemedText>
         <ThemedText
           variant="primary"
@@ -76,11 +87,25 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View className="mt-10 px-4">
+      <View className="mt-10 px-6">
         <InsightCard percentage={spentPercentage} />
       </View>
 
       <TransactionsList budget={budget} totalExpenses={totalExpenses} />
+
+      <View className="absolute top-0 right-6 z-50 h-screen justify-between py-16">
+        <Button
+          variant="ghost"
+          size="icon"
+          leftIcon={<Settings color={theme.gray.gray100} />}
+          onPress={handleSettingsPress}
+        />
+        <Button
+          onPress={handleAddTransaction}
+          size="icon"
+          leftIcon={<Plus color={theme.gray.gray100} />}
+        />
+      </View>
     </SafeAreaView>
   );
 }
