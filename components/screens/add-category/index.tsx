@@ -4,7 +4,7 @@ import * as icons from 'lucide-react-native/icons';
 import { useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import ModalScreenNodge from '~/components/modal-screen-nodge';
-import { Button, Input, ThemedText, useToast } from '~/components/ui';
+import { Button, Input, Tabs, ThemedText, useToast } from '~/components/ui';
 import { useCreateCategory } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
 import { useColorPickerStore } from '~/shared/stores/color-picker';
@@ -18,6 +18,7 @@ export default function AddCategoryScreen() {
   const { selectedColor, select: selectColor } = useColorPickerStore();
 
   const [name, setName] = useState('Shopping');
+  const [type, setType] = useState<'expense' | 'income'>('expense');
 
   const { addToast } = useToast();
   const { mutate: createCategory, isPending } = useCreateCategory();
@@ -35,7 +36,7 @@ export default function AddCategoryScreen() {
     createCategory(
       {
         name,
-        type: 'expense',
+        type,
         icon: selectedIcon,
         color: selectedColor,
       },
@@ -101,6 +102,16 @@ export default function AddCategoryScreen() {
           placeholder="Enter category name"
           label="Category Name"
           placeholderTextColor={theme.gray.gray500}
+        />
+
+        <Tabs
+          value={type}
+          onChange={(value) => setType(value as 'expense' | 'income')}
+          label="Type"
+          options={[
+            { label: 'Expense', value: 'expense' },
+            { label: 'Income', value: 'income' },
+          ]}
         />
 
         <View className="gap-4">

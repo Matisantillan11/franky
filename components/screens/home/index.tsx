@@ -2,7 +2,7 @@ import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Badge, Button, InsightCard, Plus, Settings, ThemedText } from '~/components/ui';
+import { Badge, Button, Plus, Settings, ThemedText } from '~/components/ui';
 import { useSettings, useTransactions } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
 import { CurrencyType } from '~/shared/types/settings.types';
@@ -87,10 +87,6 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      <View className="mt-10 px-6">
-        <InsightCard percentage={spentPercentage} />
-      </View>
-
       <TransactionsList budget={budget} totalExpenses={totalExpenses} />
 
       <View className="absolute top-0 right-6 z-50 h-screen justify-between py-16">
@@ -103,6 +99,7 @@ export default function HomeScreen() {
         <Button
           onPress={handleAddTransaction}
           size="icon"
+          className="bg-brand-brand600"
           leftIcon={<Plus color={theme.gray.gray100} />}
         />
       </View>

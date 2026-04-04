@@ -1,6 +1,8 @@
 import * as icons from 'lucide-react-native/icons';
 import React, { useEffect, useRef } from 'react';
 import { Animated, ColorValue, View } from 'react-native';
+import { TransactionType } from '~/libs';
+import { cn } from '~/shared/utils/tailwind';
 import Button from '../button';
 import ThemedText from '../themed-text';
 
@@ -10,6 +12,7 @@ type ExpenseCardProps = {
   amount: string;
   color: string;
   progress: number; // 0 to 1
+  type: TransactionType;
   onPress?: () => void;
 };
 
@@ -19,6 +22,7 @@ export default function ExpenseCard({
   amount,
   color,
   progress,
+  type,
   onPress,
 }: ExpenseCardProps) {
   const LucideIcon = icons[icon as keyof typeof icons] as React.ComponentType<{
@@ -57,7 +61,13 @@ export default function ExpenseCard({
           <ThemedText variant="primary" className="flex-1 text-base font-bold">
             {category}
           </ThemedText>
-          <ThemedText variant="primary" className="text-base font-bold">
+          <ThemedText
+            variant="primary"
+            className={cn(
+              'text-base font-bold',
+              type === 'income' ? 'text-success-success700' : ''
+            )}
+          >
             {amount}
           </ThemedText>
         </View>

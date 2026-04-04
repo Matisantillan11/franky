@@ -82,14 +82,7 @@ export default function Calendar({ value, onChange, label }: CalendarProps) {
       </View>
 
       <Modal ref={bottomSheetRef} containerComponent={containerComponent}>
-        <View className="flex-1 gap-4 p-4">
-          <View className="flex-row gap-2">
-            {SHORTCUTS.map((shortcut) => (
-              <Button key={shortcut} variant="outline" onPress={() => handleShortcut(shortcut)}>
-                {shortcut}
-              </Button>
-            ))}
-          </View>
+        <View className="flex-1 gap-4 px-4">
           <DatePicker date={date} onDateChange={handleDateChange} mode="date" theme="dark" />
         </View>
 

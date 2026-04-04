@@ -8,6 +8,7 @@ import {
   Form,
   FormField,
   Input,
+  Tabs,
   TextArea,
   ThemedText,
   useForm,
@@ -27,19 +28,20 @@ export default function FormComposition() {
     defaultValues: {
       amount: '',
       categoryId: '',
+      type: 'expense',
       date: new Date(),
       notes: '',
     },
   });
 
-  const { handleSubmit } = form;
+  const { handleSubmit, watch } = form;
   const { mutateAsync: createTransaction } = useCreateTransaction();
 
   const onSubmitForm = (data: AddTransactionFormValues) => {
     createTransaction(
       {
         amount: Number(transformCurrencyToString(data.amount)),
-        type: 'expense',
+        type: data.type,
         categoryId: data.categoryId,
         dueDate: data.date,
         note: data.notes,
@@ -75,23 +77,43 @@ export default function FormComposition() {
           <View className="w-full items-center">
             <ThemedText className="text-center">Total amount</ThemedText>
             <FormField name={AddTransactionFormKeys.amount} form={form}>
-              {({ field }) => (
-                <Input
-                  {...field}
-                  value={transformValueToCurrency(field.value, true)}
-                  onChangeText={field.onChange}
-                  placeholder="$ 0.00"
-                  size="xl"
-                  variant="ghost"
-                  className="w-full"
-                  keyboardType="numeric"
-                />
-              )}
+              {({ field }) => {
+                const value = `${transformValueToCurrency(field.value, true)}`;
+
+                return (
+                  <Input
+                    {...field}
+                    value={value}
+                    onChangeText={field.onChange}
+                    placeholder="$ 0.00"
+                    size="xl"
+                    variant="ghost"
+                    className="w-full"
+                    keyboardType="numeric"
+                  />
+                );
+              }}
             </FormField>
           </View>
 
           <View className="h-full w-full flex-1 gap-10">
             <CategoriesList form={form} />
+
+            <FormField name={AddTransactionFormKeys.type} form={form}>
+              {({ field }) => (
+                <View className="px-4">
+                  <Tabs
+                    value={field.value}
+                    onChange={(value) => field.onChange(value as 'expense' | 'income')}
+                    label="Type"
+                    options={[
+                      { label: 'Expense', value: 'expense' },
+                      { label: 'Income', value: 'income' },
+                    ]}
+                  />
+                </View>
+              )}
+            </FormField>
 
             <View className="w-full gap-4 px-4">
               <FormField name={AddTransactionFormKeys.date} form={form}>

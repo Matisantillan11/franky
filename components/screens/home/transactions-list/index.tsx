@@ -3,6 +3,7 @@ import { useCallback, useMemo } from 'react';
 import { View } from 'react-native';
 import ConditionalWrapper from '~/components/conditional-wrapper';
 import { ExpenseCard, FlashList, ThemedText } from '~/components/ui';
+import { TransactionType } from '~/libs';
 import { useSettings, useTransactions } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
 import { CurrencyType } from '~/shared/types/settings.types';
@@ -15,6 +16,7 @@ type GroupedExpense = {
   name: string;
   icon: string;
   categoryId: string;
+  type: TransactionType;
 };
 
 export default function TransactionsList({
@@ -49,12 +51,12 @@ export default function TransactionsList({
     if (!transactions) return [];
 
     const grouped = transactions.reduce<Record<string, GroupedExpense>>((acc, t) => {
-      if (t.type !== 'expense') return acc;
       const key = t.categoryId ?? 'uncategorized';
       if (!acc[key]) {
         if (t?.category?.name) {
           acc[key] = {
             total: 0,
+            type: t.type,
             color: (t.category?.color ?? getFrontColor(t.amount) ?? theme.brand.brand700) as string,
             name: t.category?.name as string,
             icon: t.category?.icon as string,
@@ -75,8 +77,8 @@ export default function TransactionsList({
 
   return (
     <ConditionalWrapper conditional={userHasTransactions}>
-      <View className="h-full px-2 pb-72">
-        <View className="flex-1 gap-6 px-4 pb-80">
+      <View className="h-full px-2 py-10">
+        <View className="flex-1 gap-6 px-4 pb-64">
           <FlashList
             ListHeaderComponent={
               <View className="my-4 flex-row">
@@ -86,16 +88,19 @@ export default function TransactionsList({
               </View>
             }
             data={groupedExpenses}
-            renderItem={({ item }) => (
-              <ExpenseCard
-                icon={item.icon}
-                category={item.name}
-                amount={`${currency} ${transformValueToCurrency(item.total.toString(), true)}`}
-                color={item.color}
-                progress={item.total / totalExpenses}
-                onPress={() => router.push(`/transactions/${item.categoryId}`)}
-              />
-            )}
+            renderItem={({ item }) => {
+              return (
+                <ExpenseCard
+                  icon={item.icon}
+                  category={item.name}
+                  amount={`${currency} ${transformValueToCurrency(item.total.toString(), true)}`}
+                  type={item.type}
+                  color={item.color}
+                  progress={item.total / totalExpenses}
+                  onPress={() => router.push(`/transactions/${item.categoryId}`)}
+                />
+              );
+            }}
             keyExtractor={(item) => item.categoryId}
             ItemSeparatorComponent={() => <View className="h-3" />}
           />

@@ -14,7 +14,7 @@ export default function CategoriesList<T extends UseFormReturn<AddTransactionFor
 }: {
   form: T;
 }) {
-  const { data: categories } = useCategoriesByType(['expense', 'both']);
+  const { data: categories } = useCategoriesByType(['expense', 'income', 'both']);
   const router = useRouter();
   const selectedCategoryId = useCategoryPickerStore((s) => s.selectedCategoryId);
   const clear = useCategoryPickerStore((s) => s.clear);
@@ -37,13 +37,18 @@ export default function CategoriesList<T extends UseFormReturn<AddTransactionFor
   const allCategories: Array<Category> = useMemo(() => {
     if (!categories) return [];
     const bothCategories = categories.filter((c) => c.type === 'both');
-    const expense = categories.filter((c) => c.type === 'expense');
-    const selectedIndex = expense.findIndex((c) => c.id === categoryId);
+    const selectedIndex = categories.findIndex((c) => c.id === categoryId);
+
     if (selectedIndex > 0) {
-      const [selected] = expense.splice(selectedIndex, 1);
-      expense.unshift(selected);
+      const [selected] = categories.splice(selectedIndex, 1);
+      categories.unshift(selected);
     }
-    return [...expense.slice(0, 4), ...bothCategories];
+
+    const filteredCategories = categories.filter(
+      (c) => c.type === 'expense' || c.type === 'both' || c.id === categoryId
+    );
+
+    return [...filteredCategories.slice(0, 4), ...bothCategories];
   }, [categories, categoryId]);
 
   return (

@@ -30,6 +30,7 @@ export { default as Modal } from './modal';
 export { type BottomSheetModal } from './modal/types';
 export { default as RadioGroup } from './radio-group';
 export { RadioGroup as PrimitiveRadioGroup, RadioGroupItem } from './radio-group/components';
+export { default as Tabs } from './tabs';
 export { default as TextArea } from './text-area';
 export { default as ThemedText } from './themed-text';
 export { Toaster, useToast } from './toast';
