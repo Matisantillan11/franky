@@ -8,7 +8,6 @@ import {
   Button,
   Modal,
   Money,
-  Notifications,
   Shapes,
   ThemedText,
   Trash,
@@ -117,7 +116,7 @@ export default function SettingsScreen() {
                 description="Manage expense and income categories"
                 onPress={() => router.push('/all-categories')}
               />
-              <Card
+              {/*  <Card
                 disabled={false}
                 variant="ghost"
                 icon={
@@ -127,7 +126,7 @@ export default function SettingsScreen() {
                 }
                 title="Notifications"
                 description="Manage notification preferences"
-              />
+              /> */}
             </View>
           </View>
         </View>
