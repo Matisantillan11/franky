@@ -1,3 +1,4 @@
+export { default as DeleteLoaderIcon } from './animated-icons/delete-loader-icon';
 export { default as SuccessAnimatedIcon } from './animated-icons/success-animated-icon';
 export { default as BackArrow } from './back-arrow';
 export { default as CalendarIcon } from './calendar';

@@ -1,15 +1,19 @@
 import { useRouter } from 'expo-router';
+import { useRef } from 'react';
 import { ScrollView, View } from 'react-native';
+
 import Card from '~/components/card';
 import {
   BackArrow,
   Button,
+  Modal,
   Money,
   Notifications,
   Shapes,
   ThemedText,
   Trash,
   Wallet,
+  type BottomSheetModal,
 } from '~/components/ui';
 import { useSettings } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
@@ -23,6 +27,17 @@ export default function SettingsScreen() {
   const { data: settings } = useSettings();
 
   const monthlyBudget = transformValueToCurrency(settings?.monthlyIncome?.toString() ?? '0', true);
+
+  const clearDataModalRef = useRef<BottomSheetModal>(null);
+
+  const handleOpenClearDataModal = () => {
+    clearDataModalRef.current?.present();
+  };
+
+  const handleConfirmClearData = () => {
+    clearDataModalRef.current?.dismiss();
+    router.push('/delete-data');
+  };
 
   const navigateToUpdateCurrency = () => {
     router.navigate('/update-currency');
@@ -120,10 +135,34 @@ export default function SettingsScreen() {
         <Button
           leftIcon={<Trash size={20} color={theme.error.error500} />}
           className="bg-error-error500/30 active:bg-error-error500/20 mx-10 mt-16"
+          onPress={handleOpenClearDataModal}
         >
           <ThemedText className="text-error-error500">Clear all my data</ThemedText>
         </Button>
       </View>
+
+      <Modal ref={clearDataModalRef} snapPoints={['40%']}>
+        <View className="items-center gap-6 px-4 pb-10">
+          <View className="items-center gap-2">
+            <ThemedText variant="primary" size="subtitle" className="text-xl">
+              Permanent Reset
+            </ThemedText>
+            <ThemedText className="text-text-tertiary text-center">
+              This will wipe your entire history, including custom categories. Only proceed if you
+              want to start your workspace from scratch.
+            </ThemedText>
+          </View>
+          <View className="mt-4 w-full flex-row gap-3">
+            <Button
+              variant="default"
+              className="bg-error-error500 w-full"
+              onPress={handleConfirmClearData}
+            >
+              Clear everything
+            </Button>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }

@@ -20,6 +20,8 @@ export {
   Shapes,
   Shrub,
   Trash,
+  DeleteLoaderIcon,
+  SuccessAnimatedIcon,
   TrendingUp,
   User,
   Wallet,
