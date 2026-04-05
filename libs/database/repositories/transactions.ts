@@ -34,7 +34,18 @@ function buildWhereClause(filters: TransactionFilters) {
 
 export const transactionsRepository = {
   async findAll(filters: TransactionFilters = {}): Promise<TransactionWithCategory[]> {
-    const where = buildWhereClause(filters);
+    const now = new Date();
+
+    const firstDayOfTheMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDayOfTheMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+    const resolvedFilters: TransactionFilters = {
+      ...filters,
+      startDate: filters.startDate ?? firstDayOfTheMonth,
+      endDate: filters.endDate ?? lastDayOfTheMonth,
+    };
+
+    const where = buildWhereClause(resolvedFilters);
 
     return db.query.transactions.findMany({
       where,
