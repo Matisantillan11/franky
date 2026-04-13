@@ -19,6 +19,8 @@ function RootLayout() {
         <Stack.Screen name="all-categories" options={{ presentation: 'modal' }} />
         <Stack.Screen name="icon-picker" options={{ presentation: 'modal' }} />
         <Stack.Screen name="color-picker" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="privacy-policy" options={{ presentation: 'modal' }} />
+        <Stack.Screen name="terms-conditions" options={{ presentation: 'modal' }} />
       </Stack>
     </AppProviders>
   );

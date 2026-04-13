@@ -60,10 +60,10 @@ export default function HomeScreen() {
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1">
       <>
-        <ConditionalWrapper conditional={userHasTransactions}>
+        <ConditionalWrapper conditional={!userHasTransactions}>
           <EmptyState />
         </ConditionalWrapper>
-        <ConditionalWrapper conditional={!userHasTransactions}>
+        <ConditionalWrapper conditional={userHasTransactions}>
           <>
             <View className="items-center justify-center gap-2 px-6 pt-10">
               <ThemedText>Remaining monthly budget</ThemedText>

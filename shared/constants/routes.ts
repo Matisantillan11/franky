@@ -6,4 +6,6 @@ export const ROUTES = {
   BUDGET: '/(home)/budget',
   STATS: '/(home)/stats',
   SETTINGS: '/(home)/settings',
+  PRIVACY_POLICY: '/privacy-policy',
+  TERMS_CONDITIONS: '/terms-conditions',
 } as const;

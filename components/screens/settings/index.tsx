@@ -8,9 +8,11 @@ import {
   Button,
   Modal,
   Money,
+  Receipt,
   Shapes,
   ThemedText,
   Trash,
+  User,
   Wallet,
   type BottomSheetModal,
 } from '~/components/ui';
@@ -129,11 +131,41 @@ export default function SettingsScreen() {
               /> */}
             </View>
           </View>
+
+          <View className="gap-4">
+            <ThemedText variant="secondary">Legal</ThemedText>
+            <View>
+              <Card
+                disabled={false}
+                variant="ghost"
+                icon={
+                  <View className={cn('bg-brand-brand700 rounded-xl p-2')}>
+                    <User color={theme.brand.brand500} />
+                  </View>
+                }
+                title="Privacy Policy"
+                description="How we handle your data"
+                onPress={() => router.push('/privacy-policy')}
+              />
+              <Card
+                disabled={false}
+                variant="ghost"
+                icon={
+                  <View className={cn('bg-brand-brand700 rounded-xl p-2')}>
+                    <Receipt color={theme.brand.brand500} />
+                  </View>
+                }
+                title="Terms & Conditions"
+                description="Rules for using Franky"
+                onPress={() => router.push('/terms-conditions')}
+              />
+            </View>
+          </View>
         </View>
 
         <Button
           leftIcon={<Trash size={20} color={theme.error.error500} />}
-          className="bg-error-error500/30 active:bg-error-error500/20 mx-10 mt-16"
+          className="bg-error-error500/30 active:bg-error-error500/20 mx-10"
           onPress={handleOpenClearDataModal}
         >
           <ThemedText className="text-error-error500">Clear all my data</ThemedText>

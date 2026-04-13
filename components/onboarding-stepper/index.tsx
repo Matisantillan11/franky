@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { logError } from '~/libs';
 import { useCreateSettings } from '~/libs/fetcher';
@@ -14,7 +14,7 @@ import StepSix from '../screens/onboarding/step-six';
 import StepThree from '../screens/onboarding/step-three';
 import StepTwo from '../screens/onboarding/step-two';
 import SuccessScreen from '../screens/success-screen';
-import { Button } from '../ui';
+import { Button, ThemedText } from '../ui';
 import { ONBOARDING_STORAGE } from './constants';
 import { STEPS } from './types';
 
@@ -156,7 +156,7 @@ export const OnboardingStepper = () => {
     <View className="my-10 w-full flex-1 justify-between gap-10">
       {stepDictionary[step]}
 
-      <View className="w-full px-4">
+      <View className="w-full gap-4 px-4">
         <Button className="w-full" onPress={handleNextStep} disabled={isUserSettingsCreating}>
           {isUserSettingsCreating ? (
             <ActivityIndicator size="small" />
@@ -164,6 +164,31 @@ export const OnboardingStepper = () => {
             stepActionTextDictionary[step]
           )}
         </Button>
+
+        {step === STEPS.STEP_ONE && (
+          <View className="flex-row flex-wrap items-center justify-center">
+            <ThemedText variant="secondary" className="px-14 text-center text-xs">
+              By continuing you agree to our
+            </ThemedText>
+            <ThemedText
+              variant="secondary"
+              className="text-brand-brand500 text-xs underline"
+              onPress={() => router.push(ROUTES.TERMS_CONDITIONS)}
+            >
+              Terms & Conditions
+            </ThemedText>
+            <ThemedText variant="secondary" className="px-1 text-xs">
+              and
+            </ThemedText>
+            <ThemedText
+              variant="secondary"
+              className="text-brand-brand500 text-xs underline"
+              onPress={() => router.push(ROUTES.PRIVACY_POLICY)}
+            >
+              Privacy Policy
+            </ThemedText>
+          </View>
+        )}
       </View>
     </View>
   );
