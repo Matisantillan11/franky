@@ -1,11 +1,16 @@
 import ModalScreenNodge from '~/components/modal-screen-nodge';
 import FormComposition from './components/form/form-composition';
 
-export default function AddTransactionScreen() {
+type Props = {
+  initialAmount?: string;
+  initialCategoryName?: string;
+};
+
+export default function AddTransactionScreen({ initialAmount, initialCategoryName }: Props) {
   return (
     <>
       <ModalScreenNodge />
-      <FormComposition />
+      <FormComposition initialAmount={initialAmount} initialCategoryName={initialCategoryName} />
     </>
   );
 }

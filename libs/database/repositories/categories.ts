@@ -1,4 +1,4 @@
-import { eq, or } from 'drizzle-orm';
+import { eq, like, or } from 'drizzle-orm';
 import { db } from '../client';
 import { categories } from '../schema';
 import type { Category, CategoryFilter, NewCategory } from '../types';
@@ -25,6 +25,15 @@ export const categoriesRepository = {
 
   async findById(id: string): Promise<Category | undefined> {
     const result = await db.select().from(categories).where(eq(categories.id, id)).limit(1);
+    return result[0];
+  },
+
+  async findByName(name: string): Promise<Category | undefined> {
+    const result = await db
+      .select()
+      .from(categories)
+      .where(like(categories.name, name))
+      .limit(1);
     return result[0];
   },
 

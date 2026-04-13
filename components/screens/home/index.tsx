@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import ConditionalWrapper from '~/components/conditional-wrapper';
 import { Badge, Button, Plus, Settings, ThemedText } from '~/components/ui';
 import { useSettings, useTransactions } from '~/libs/fetcher';
 import { theme } from '~/shared/constants/theme';
@@ -9,6 +10,7 @@ import { CurrencyType } from '~/shared/types/settings.types';
 import { getCurrencyWithoutSuffix } from '~/shared/utils/money-utils';
 import { cn } from '~/shared/utils/tailwind';
 import { transformValueToCurrency } from '~/shared/utils/text-utils';
+import EmptyState from './empty-state';
 import TransactionsList from './transactions-list';
 
 export default function HomeScreen() {
@@ -45,11 +47,6 @@ export default function HomeScreen() {
       : `${currency} ${remainingMoney}`;
   }, [budget, transactions, totalExpenses]);
 
-  const spentPercentage = useMemo(() => {
-    if (!budget) return 0;
-    return (totalExpenses / budget) * 100;
-  }, [budget, totalExpenses]);
-
   const handleAddTransaction = () => {
     router.push('/add-transaction');
   };
@@ -58,51 +55,62 @@ export default function HomeScreen() {
     router.push('/settings');
   };
 
+  const userHasTransactions = transactions && transactions?.length > 0;
+
   return (
     <SafeAreaView edges={['top', 'bottom']} className="flex-1">
-      <View className="items-center justify-center gap-2 px-6 pt-10">
-        <ThemedText>Remaining monthly budget</ThemedText>
-        <ThemedText
-          variant="primary"
-          className={cn(
-            'mb-2 text-xl font-bold',
-            remainingMonthlyBudget.toString().includes('-') ? 'text-error-error500' : ''
-          )}
-        >
-          {remainingMonthlyBudget}
-        </ThemedText>
-        <View className="flex-row gap-3">
-          <Badge
-            label={`Income: ${currency} ${transformValueToCurrency(budget?.toString() ?? '0', true)}`}
-            color={theme.brand.brand400}
-            variant="default"
-            className="border-brand-brand500 border"
-          />
-          <Badge
-            label={`Spent: ${currency} ${transformValueToCurrency(totalExpenses.toString(), true)}`}
-            color={theme.error.error400}
-            variant="default"
-            className="border-error-error500 border"
-          />
-        </View>
-      </View>
+      <>
+        <ConditionalWrapper conditional={userHasTransactions}>
+          <EmptyState />
+        </ConditionalWrapper>
+        <ConditionalWrapper conditional={!userHasTransactions}>
+          <>
+            <View className="items-center justify-center gap-2 px-6 pt-10">
+              <ThemedText>Remaining monthly budget</ThemedText>
+              <ThemedText
+                variant="primary"
+                className={cn(
+                  'mb-2 text-xl font-bold',
+                  remainingMonthlyBudget.toString().includes('-') ? 'text-error-error500' : ''
+                )}
+              >
+                {remainingMonthlyBudget}
+              </ThemedText>
+              <View className="flex-row gap-3">
+                <Badge
+                  label={`Income: ${currency} ${transformValueToCurrency(budget?.toString() ?? '0', true)}`}
+                  color={theme.brand.brand400}
+                  variant="default"
+                  className="border-brand-brand500 border"
+                />
+                <Badge
+                  label={`Spent: ${currency} ${transformValueToCurrency(totalExpenses.toString(), true)}`}
+                  color={theme.error.error400}
+                  variant="default"
+                  className="border-error-error500 border"
+                />
+              </View>
+            </View>
 
-      <TransactionsList budget={budget} totalExpenses={totalExpenses} />
+            <TransactionsList budget={budget} totalExpenses={totalExpenses} />
 
-      <View className="absolute top-0 right-6 z-50 h-screen justify-between py-16">
-        <Button
-          variant="ghost"
-          size="icon"
-          leftIcon={<Settings color={theme.gray.gray100} />}
-          onPress={handleSettingsPress}
-        />
-        <Button
-          onPress={handleAddTransaction}
-          size="icon"
-          className="bg-brand-brand600"
-          leftIcon={<Plus color={theme.gray.gray100} />}
-        />
-      </View>
+            <View className="absolute top-0 right-6 z-50 h-screen justify-between py-16">
+              <Button
+                variant="ghost"
+                size="icon"
+                leftIcon={<Settings color={theme.gray.gray100} />}
+                onPress={handleSettingsPress}
+              />
+              <Button
+                onPress={handleAddTransaction}
+                size="icon"
+                className="bg-brand-brand600"
+                leftIcon={<Plus color={theme.gray.gray100} />}
+              />
+            </View>
+          </>
+        </ConditionalWrapper>
+      </>
     </SafeAreaView>
   );
 }

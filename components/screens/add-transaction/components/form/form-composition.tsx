@@ -1,5 +1,5 @@
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View } from 'react-native';
 import { BlurView } from '~/components/blur-circle';
 import {
@@ -14,19 +14,24 @@ import {
   useForm,
   useToast,
 } from '~/components/ui';
-import { useCreateTransaction } from '~/libs/fetcher';
+import { useCategories, useCreateTransaction } from '~/libs/fetcher';
 import { transformCurrencyToString, transformValueToCurrency } from '~/shared/utils/text-utils';
 import CategoriesList from '../categories-list';
 import { AddTransactionFormKeys } from './constants';
 import { AddTransactionFormValues } from './types';
 
-export default function FormComposition() {
+type Props = {
+  initialAmount?: string;
+  initialCategoryName?: string;
+};
+
+export default function FormComposition({ initialAmount, initialCategoryName }: Props) {
   const router = useRouter();
 
   const { addToast } = useToast();
   const form = useForm<AddTransactionFormValues>({
     defaultValues: {
-      amount: '',
+      amount: initialAmount ?? '',
       categoryId: '',
       type: 'expense',
       date: new Date(),
@@ -36,6 +41,20 @@ export default function FormComposition() {
 
   const { handleSubmit, watch } = form;
   const { mutateAsync: createTransaction } = useCreateTransaction();
+  const { data: categories } = useCategories();
+
+  // Resolve categoryName → categoryId when coming from a Shortcut deep link
+  useEffect(() => {
+    if (!initialCategoryName || !categories) return;
+
+    const match = categories.find(
+      (c) => c.name.toLowerCase() === initialCategoryName.toLowerCase()
+    );
+
+    if (match) {
+      form.setValue('categoryId', match.id);
+    }
+  }, [initialCategoryName, categories]);
 
   const onSubmitForm = (data: AddTransactionFormValues) => {
     createTransaction(
@@ -144,3 +163,4 @@ export default function FormComposition() {
     </Form>
   );
 }
+
