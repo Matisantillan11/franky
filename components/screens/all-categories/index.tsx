@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CategoryCard from '~/components/category-card';
@@ -9,19 +10,20 @@ import { Category, CategoryType } from '~/libs';
 import { useCategoriesByType } from '~/libs/fetcher';
 import { useCategoryPickerStore } from '~/shared/stores/category-picker';
 
-const TYPE_LABELS: Record<string, string> = {
-  income: 'Income',
-  expense: 'Expense',
-  both: 'Income & Expense',
-};
-
 type HeaderItem = { type: 'header'; title: string };
 type CategoryItem = { type: 'item'; data: Category };
 type FlatItem = HeaderItem | CategoryItem;
 
 export default function AllCategoriesScreen() {
   const { data: categories } = useCategoriesByType(['income', 'expense']);
+  const { t } = useTranslation();
   const router = useRouter();
+
+  const typeLabels: Record<string, string> = {
+    income: t('category.all.income'),
+    expense: t('category.all.expense'),
+    both: t('category.all.both'),
+  };
 
   const flatData = useMemo<FlatItem[]>(() => {
     if (!categories) return [];
@@ -37,11 +39,11 @@ export default function AllCategoriesScreen() {
       const items = grouped[type];
       if (!items?.length) return [];
       return [
-        { type: 'header', title: TYPE_LABELS[type] } as HeaderItem,
+        { type: 'header', title: typeLabels[type] } as HeaderItem,
         ...items.map((data) => ({ type: 'item', data }) as CategoryItem),
       ];
     });
-  }, [categories]);
+  }, [categories, t]);
 
   const select = useCategoryPickerStore((s) => s.select);
 
@@ -62,7 +64,7 @@ export default function AllCategoriesScreen() {
           <FlashList
             ListHeaderComponent={
               <ThemedText variant="primary" className="py-4 text-xl font-bold">
-                Categories
+                {t('category.all.title')}
               </ThemedText>
             }
             data={flatData}
@@ -90,13 +92,13 @@ export default function AllCategoriesScreen() {
             }
             ListEmptyComponent={
               <View className="items-center py-16">
-                <ThemedText className="opacity-40">No categories</ThemedText>
+                <ThemedText className="opacity-40">{t('category.all.empty')}</ThemedText>
               </View>
             }
           />
         </View>
         <View className="mx-4 mb-16">
-          <Button onPress={handleRedirectToAddCategory}>Add new category</Button>
+          <Button onPress={handleRedirectToAddCategory}>{t('category.all.addNew')}</Button>
         </View>
       </View>
     </SafeAreaView>

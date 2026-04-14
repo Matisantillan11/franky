@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import { DeleteLoaderIcon, SuccessAnimatedIcon, ThemedText } from '~/components/ui';
@@ -9,6 +10,7 @@ export default function DeleteDataPage() {
   const router = useRouter();
   const [status, setStatus] = useState<'deleting' | 'success'>('deleting');
 
+  const { t } = useTranslation();
   const { mutate: clearAllData } = useClearAllData();
 
   useEffect(() => {
@@ -44,10 +46,10 @@ export default function DeleteDataPage() {
               size="subtitle"
               className="text-center text-2xl font-bold"
             >
-              Clearing all your data...
+              {t('settings.clearData.deleting.title')}
             </ThemedText>
             <ThemedText variant="secondary" className="text-center opacity-70">
-              This will only take a few moments
+              {t('settings.clearData.deleting.subtitle')}
             </ThemedText>
           </View>
         </Animated.View>
@@ -60,10 +62,10 @@ export default function DeleteDataPage() {
               size="subtitle"
               className="text-center text-2xl font-bold"
             >
-              All data cleared!
+              {t('settings.clearData.deleted.title')}
             </ThemedText>
             <ThemedText variant="secondary" className="text-center opacity-70">
-              Redirecting you to onboarding
+              {t('settings.clearData.deleted.subtitle')}
             </ThemedText>
           </View>
         </Animated.View>

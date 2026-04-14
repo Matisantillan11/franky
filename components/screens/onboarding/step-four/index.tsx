@@ -1,9 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import CurrencyCard from '~/components/currency-card';
 import { FlashList, PrimitiveRadioGroup, ThemedText } from '~/components/ui';
 import { CurrencyType } from '~/shared/types/settings.types';
 import { cn } from '~/shared/utils/tailwind';
-import { CURRENCY_OPTIONS } from './constants';
+import { getCurrencyOptions } from './constants';
 
 export default function StepFour({
   currency,
@@ -12,14 +13,17 @@ export default function StepFour({
   currency: CurrencyType;
   updateCurrency: (currency: CurrencyType) => void;
 }) {
+  const { t } = useTranslation();
+  const currencyOptions = getCurrencyOptions(t);
+
   return (
     <View className="flex-1 gap-4">
       <View className="items-center gap-4 px-10">
         <ThemedText variant="primary" size="title" className="px-10 text-center">
-          Choose your currency
+          {t('onboarding.step4.title')}
         </ThemedText>
         <ThemedText size="subtitle" className="text-center">
-          Select the main currency you use for your daily expenses.
+          {t('onboarding.step4.subtitle')}
         </ThemedText>
       </View>
 
@@ -29,7 +33,7 @@ export default function StepFour({
         onValueChange={(value) => updateCurrency(value as CurrencyType)}
       >
         <FlashList
-          data={CURRENCY_OPTIONS}
+          data={currencyOptions}
           horizontal={false}
           renderItem={({ item }) => {
             const isSelected = currency === item.id;

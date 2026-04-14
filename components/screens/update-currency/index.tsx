@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import CurrencyCard from '~/components/currency-card';
 import ModalScreenNodge from '~/components/modal-screen-nodge';
@@ -7,10 +8,12 @@ import { Button, FlashList, PrimitiveRadioGroup, ThemedText, useToast } from '~/
 import { useSettings, useUpdateSettings } from '~/libs/fetcher';
 import { CurrencyType } from '~/shared/types/settings.types';
 import { cn } from '~/shared/utils/tailwind';
-import { CURRENCY_OPTIONS } from '../onboarding/step-four/constants';
+import { getCurrencyOptions } from '../onboarding/step-four/constants';
 
 export default function UpdateCurrencyScreen() {
   const [currency, setCurrency] = useState<CurrencyType>(CurrencyType.DOLLAR);
+  const { t } = useTranslation();
+  const currencyOptions = getCurrencyOptions(t);
 
   const { data: settings, isLoading } = useSettings();
   const { mutateAsync: updateSettings, isPending } = useUpdateSettings();
@@ -41,7 +44,7 @@ export default function UpdateCurrencyScreen() {
         },
         onError: () => {
           addToast({
-            message: 'Error uploading your currency, please try again later',
+            message: t('currency.update.error'),
             type: 'error',
           });
         },
@@ -54,10 +57,10 @@ export default function UpdateCurrencyScreen() {
       <ModalScreenNodge />
       <View className="items-center gap-4 px-5">
         <ThemedText variant="primary" size="title" className="px-10 text-center">
-          Update your preferred currency
+          {t('currency.update.title')}
         </ThemedText>
         <ThemedText size="subtitle" className="text-center">
-          Select the main currency you use for your daily expenses.
+          {t('currency.update.subtitle')}
         </ThemedText>
       </View>
 
@@ -67,7 +70,7 @@ export default function UpdateCurrencyScreen() {
         onValueChange={(value) => updateCurrencySelection(value as CurrencyType)}
       >
         <FlashList
-          data={CURRENCY_OPTIONS}
+          data={currencyOptions}
           horizontal={false}
           renderItem={({ item }) => {
             const isSelected = currency === item.id;
@@ -89,7 +92,7 @@ export default function UpdateCurrencyScreen() {
 
       <View className="p-10">
         <Button onPress={updateCurrency} disabled={isPending}>
-          {isPending ? 'Saving...' : 'Save'}
+          {isPending ? t('currency.update.saving') : t('currency.update.save')}
         </Button>
       </View>
     </View>

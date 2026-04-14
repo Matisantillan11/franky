@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,6 +13,7 @@ export default function SuccessScreen({
   actionText: string;
   handleActionPress: () => void;
 }) {
+  const { t } = useTranslation();
   const getAnimation = () => FadeInDown.delay(500);
 
   return (
@@ -28,10 +30,10 @@ export default function SuccessScreen({
 
             <View className="items-center gap-4 px-10">
               <ThemedText variant="primary" size="title" className="px-10 text-center">
-                You're all set!
+                {t('success.title')}
               </ThemedText>
               <ThemedText size="subtitle" className="px-8 text-center">
-                Your budget is now clear and ready
+                {t('success.subtitle')}
               </ThemedText>
             </View>
           </View>

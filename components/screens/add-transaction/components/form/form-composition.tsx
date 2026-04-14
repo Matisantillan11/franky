@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { BlurView } from '~/components/blur-circle';
 import {
@@ -27,6 +28,7 @@ type Props = {
 
 export default function FormComposition({ initialAmount, initialCategoryName }: Props) {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { addToast } = useToast();
   const form = useForm<AddTransactionFormValues>({
@@ -68,18 +70,16 @@ export default function FormComposition({ initialAmount, initialCategoryName }: 
       {
         onSuccess: () => {
           addToast({
-            message: 'Transaction saved successfully',
-            description:
-              'Your transaction has been saved successfully. Go to your dashboard to see your updated balance.',
+            message: t('transaction.success.title'),
+            description: t('transaction.success.description'),
             type: 'success',
           });
           router.back();
         },
         onError: () => {
           addToast({
-            message: 'Error saving transaction',
-            description:
-              'Something went wrong while saving your transaction. Please try again later.',
+            message: t('transaction.error.title'),
+            description: t('transaction.error.description'),
             type: 'error',
           });
         },
@@ -94,7 +94,7 @@ export default function FormComposition({ initialAmount, initialCategoryName }: 
           <View className="h-10 w-full" />
 
           <View className="w-full items-center">
-            <ThemedText className="text-center">Total amount</ThemedText>
+            <ThemedText className="text-center">{t('transaction.totalAmount')}</ThemedText>
             <FormField name={AddTransactionFormKeys.amount} form={form}>
               {({ field }) => {
                 const value = `${transformValueToCurrency(field.value, true)}`;
@@ -104,7 +104,7 @@ export default function FormComposition({ initialAmount, initialCategoryName }: 
                     {...field}
                     value={value}
                     onChangeText={field.onChange}
-                    placeholder="$ 0.00"
+                    placeholder={t('transaction.placeholder')}
                     size="xl"
                     variant="ghost"
                     className="w-full"
@@ -124,10 +124,10 @@ export default function FormComposition({ initialAmount, initialCategoryName }: 
                   <Tabs
                     value={field.value}
                     onChange={(value) => field.onChange(value as 'expense' | 'income')}
-                    label="Type"
+                    label={t('transaction.expense') + ' / ' + t('transaction.income')}
                     options={[
-                      { label: 'Expense', value: 'expense' },
-                      { label: 'Income', value: 'income' },
+                      { label: t('transaction.expense'), value: 'expense' },
+                      { label: t('transaction.income'), value: 'income' },
                     ]}
                   />
                 </View>
@@ -136,17 +136,17 @@ export default function FormComposition({ initialAmount, initialCategoryName }: 
 
             <View className="w-full gap-4 px-4">
               <FormField name={AddTransactionFormKeys.date} form={form}>
-                {({ field }) => <Calendar {...field} label="Date" />}
+                {({ field }) => <Calendar {...field} label={t('transaction.date')} />}
               </FormField>
 
               <FormField name={AddTransactionFormKeys.notes} form={form}>
                 {({ field }) => (
                   <TextArea
                     {...field}
-                    label="Notes"
+                    label={t('transaction.notes')}
                     size="lg"
                     variant="ghost"
-                    placeholder="What was this for? Add any extra details..."
+                    placeholder={t('transaction.notesPlaceholder')}
                     onChangeText={field.onChange}
                   />
                 )}
@@ -157,10 +157,9 @@ export default function FormComposition({ initialAmount, initialCategoryName }: 
 
         <View className="w-full px-4">
           <BlurView size={500} left={-50} />
-          <Button onPress={handleSubmit(onSubmitForm)}>Add transaction</Button>
+          <Button onPress={handleSubmit(onSubmitForm)}>{t('transaction.submit')}</Button>
         </View>
       </View>
     </Form>
   );
 }
-

@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import ConditionalWrapper from '~/components/conditional-wrapper';
 import { ExpenseCard, FlashList, ThemedText } from '~/components/ui';
@@ -27,6 +28,7 @@ export default function TransactionsList({
   totalExpenses: number;
 }) {
   const router = useRouter();
+  const { t } = useTranslation();
 
   const { data: transactions } = useTransactions();
   const { data: userSettings } = useSettings();
@@ -83,7 +85,7 @@ export default function TransactionsList({
             ListHeaderComponent={
               <View className="my-4 flex-row">
                 <ThemedText size="subtitle" variant="primary">
-                  Recent transactions
+                  {t('home.recentTransactions')}
                 </ThemedText>
               </View>
             }

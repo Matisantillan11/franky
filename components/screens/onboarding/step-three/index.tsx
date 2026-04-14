@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import BudgetLogo from '~/assets/images/budget.svg';
 import { BlurView } from '~/components/blur-circle';
@@ -5,7 +6,7 @@ import Card from '~/components/card';
 import { ThemedText } from '~/components/ui';
 import { BudgetType } from '~/shared/types/settings.types';
 import { cn } from '~/shared/utils/tailwind';
-import { BUDGET_OPTIONS } from './constants';
+import { getBudgetOptions } from './constants';
 
 export default function StepThree({
   budgetType,
@@ -14,6 +15,10 @@ export default function StepThree({
   budgetType: BudgetType;
   updateBudgetType: (budgetType: BudgetType) => void;
 }) {
+  const { t, i18n } = useTranslation();
+  const isSpanish = i18n.language === 'es';
+  const budgetOptions = getBudgetOptions(t);
+
   return (
     <View className="gap-4">
       <View className="-mt-10 items-center justify-center rounded-full">
@@ -22,20 +27,24 @@ export default function StepThree({
       </View>
 
       <View className="-mt-10 items-center gap-4 px-10">
-        <ThemedText variant="primary" size="title" className="px-10 text-center">
-          How would you like to budget?
+        <ThemedText
+          variant="primary"
+          size="title"
+          className={cn('text-center', isSpanish ? 'px-4' : 'px-10')}
+        >
+          {t('onboarding.step3.title')}
         </ThemedText>
         <ThemedText size="subtitle" className="text-center">
-          Choose the setup that best fits your financial journey right now.
+          {t('onboarding.step3.subtitle')}
         </ThemedText>
       </View>
 
       <View className="items-center justify-center gap-4 px-6">
-        {BUDGET_OPTIONS.map((option) => {
+        {budgetOptions.map((option) => {
           const isSelected = budgetType === option.id;
           return (
             <Card
-              key={option.title}
+              key={option.id}
               disabled={option.disabled}
               icon={
                 <View

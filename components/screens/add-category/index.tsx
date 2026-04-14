@@ -2,6 +2,7 @@ import { useRouter } from 'expo-router';
 import { Check, Palette, PlusCircle } from 'lucide-react-native';
 import * as icons from 'lucide-react-native/icons';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, View } from 'react-native';
 import ModalScreenNodge from '~/components/modal-screen-nodge';
 import { Button, Input, Tabs, ThemedText, useToast } from '~/components/ui';
@@ -14,6 +15,7 @@ const PRESET_COLORS = [theme.brand.brand500, '#8B5CF6', '#F97066', '#FDB022', '#
 
 export default function AddCategoryScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { selectedIcon } = useIconPickerStore();
   const { selectedColor, select: selectColor } = useColorPickerStore();
 
@@ -46,7 +48,7 @@ export default function AddCategoryScreen() {
         },
         onError: () => {
           addToast({
-            message: 'There was an error creating your category. Please, try again later.',
+            message: t('category.add.error'),
             type: 'error',
           });
         },
@@ -64,10 +66,10 @@ export default function AddCategoryScreen() {
       >
         <View className="items-center gap-2 pt-4">
           <ThemedText variant="primary" className="text-2xl">
-            New Category
+            {t('category.add.title')}
           </ThemedText>
           <ThemedText variant="secondary" className="text-base">
-            Personalize your spending tracker
+            {t('category.add.subtitle')}
           </ThemedText>
         </View>
 
@@ -87,37 +89,37 @@ export default function AddCategoryScreen() {
               {LucideIcon && <LucideIcon size={24} color={selectedColor} />}
             </View>
             <ThemedText variant="primary" className="text-2xl font-bold">
-              {name || 'Category'}
+              {name || t('category.add.defaultName')}
             </ThemedText>
           </Pressable>
 
           <ThemedText variant="secondary" className="text-sm">
-            Tap to change icon
+            {t('category.add.tapToChangeIcon')}
           </ThemedText>
         </View>
 
         <Input
           value={name}
           onChangeText={setName}
-          placeholder="Enter category name"
-          label="Category Name"
+          placeholder={t('category.add.namePlaceholder')}
+          label={t('category.add.nameLabel')}
           placeholderTextColor={theme.gray.gray500}
         />
 
         <Tabs
           value={type}
           onChange={(value) => setType(value as 'expense' | 'income')}
-          label="Type"
+          label={t('transaction.expense') + ' / ' + t('transaction.income')}
           options={[
-            { label: 'Expense', value: 'expense' },
-            { label: 'Income', value: 'income' },
+            { label: t('transaction.expense'), value: 'expense' },
+            { label: t('transaction.income'), value: 'income' },
           ]}
         />
 
         <View className="gap-4">
           <View className="flex-row items-center justify-between">
             <ThemedText variant="primary" className="text-base font-bold">
-              Choose Color
+              {t('category.add.chooseColor')}
             </ThemedText>
             <ThemedText className="text-brand-brand500 font-mono text-xs font-bold tracking-widest">
               {selectedColor.toUpperCase()}
@@ -177,7 +179,7 @@ export default function AddCategoryScreen() {
           onPress={handleCreateCategory}
           disabled={isPending}
         >
-          {isPending ? 'Creating...' : 'Create Category'}
+          {isPending ? t('category.add.creating') : t('category.add.create')}
         </Button>
       </View>
     </View>

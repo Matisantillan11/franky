@@ -1,5 +1,7 @@
 import { useRouter } from 'expo-router';
+import { Globe } from 'lucide-react-native';
 import { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 
 import Card from '~/components/card';
@@ -17,6 +19,7 @@ import {
   type BottomSheetModal,
 } from '~/components/ui';
 import { useSettings } from '~/libs/fetcher';
+import { SUPPORTED_LANGUAGES, useLanguage, type Language } from '~/libs/i18n/useLanguage';
 import { theme } from '~/shared/constants/theme';
 import { CurrencyType } from '~/shared/types/settings.types';
 import { getCurrencySymbol, getCurrencyWithoutSuffix } from '~/shared/utils/money-utils';
@@ -25,11 +28,14 @@ import { transformValueToCurrency } from '~/shared/utils/text-utils';
 
 export default function SettingsScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { data: settings } = useSettings();
+  const { currentLanguage, changeLanguage } = useLanguage();
 
   const monthlyBudget = transformValueToCurrency(settings?.monthlyIncome?.toString() ?? '0', true);
 
   const clearDataModalRef = useRef<BottomSheetModal>(null);
+  const languageModalRef = useRef<BottomSheetModal>(null);
 
   const handleOpenClearDataModal = () => {
     clearDataModalRef.current?.present();
@@ -58,13 +64,13 @@ export default function SettingsScreen() {
           onPress={() => router.back()}
         />
         <ThemedText variant="primary" className="text-2xl font-bold">
-          Settings
+          {t('settings.title')}
         </ThemedText>
       </View>
-      <View className="mt-10 h-full flex-col justify-between p-4">
-        <View className="h-full flex-col gap-4">
+      <View className="mt-5 h-full flex-col justify-between p-4">
+        <View className="flex-col gap-4">
           <View className="gap-4">
-            <ThemedText variant="secondary">Account</ThemedText>
+            <ThemedText variant="secondary">{t('settings.account.title')}</ThemedText>
             <View>
               <Card
                 disabled={false}
@@ -75,8 +81,8 @@ export default function SettingsScreen() {
                     <Money color={theme.brand.brand500} />
                   </View>
                 }
-                title="Currency"
-                description="Primary display currency"
+                title={t('settings.account.currency.title')}
+                description={t('settings.account.currency.description')}
                 rightIcon={
                   <ThemedText>
                     {getCurrencySymbol((settings?.currency as CurrencyType) ?? CurrencyType.DOLLAR)}
@@ -92,8 +98,8 @@ export default function SettingsScreen() {
                   </View>
                 }
                 onPress={navigateToUpdateMonthlyIncome}
-                title="Monthly Income"
-                description="See your budget baseline"
+                title={t('settings.account.monthlyIncome.title')}
+                description={t('settings.account.monthlyIncome.description')}
                 rightIcon={
                   <ThemedText>
                     {getCurrencyWithoutSuffix(settings?.currency as CurrencyType)} {monthlyBudget}
@@ -104,7 +110,7 @@ export default function SettingsScreen() {
           </View>
 
           <View className="gap-4">
-            <ThemedText variant="secondary">Preferences</ThemedText>
+            <ThemedText variant="secondary">{t('settings.preferences.title')}</ThemedText>
             <View>
               <Card
                 disabled={false}
@@ -114,26 +120,28 @@ export default function SettingsScreen() {
                     <Shapes color={theme.brand.brand500} />
                   </View>
                 }
-                title="Categories"
-                description="Manage expense and income categories"
+                title={t('settings.preferences.categories.title')}
+                description={t('settings.preferences.categories.description')}
                 onPress={() => router.push('/all-categories')}
               />
-              {/*  <Card
+              <Card
                 disabled={false}
                 variant="ghost"
                 icon={
                   <View className={cn('bg-brand-brand700 rounded-xl p-2')}>
-                    <Notifications color={theme.brand.brand500} />
+                    <Globe size={24} color={theme.brand.brand500} />
                   </View>
                 }
-                title="Notifications"
-                description="Manage notification preferences"
-              /> */}
+                title={t('settings.preferences.language.title')}
+                description={t('settings.preferences.language.description')}
+                rightIcon={<ThemedText>{currentLanguage === 'es' ? '🇪🇸' : '🇺🇸'}</ThemedText>}
+                onPress={() => languageModalRef.current?.present()}
+              />
             </View>
           </View>
 
           <View className="gap-4">
-            <ThemedText variant="secondary">Legal</ThemedText>
+            <ThemedText variant="secondary">{t('settings.legal.title')}</ThemedText>
             <View>
               <Card
                 disabled={false}
@@ -143,8 +151,8 @@ export default function SettingsScreen() {
                     <User color={theme.brand.brand500} />
                   </View>
                 }
-                title="Privacy Policy"
-                description="How we handle your data"
+                title={t('settings.legal.privacy.title')}
+                description={t('settings.legal.privacy.description')}
                 onPress={() => router.push('/privacy-policy')}
               />
               <Card
@@ -155,8 +163,8 @@ export default function SettingsScreen() {
                     <Receipt color={theme.brand.brand500} />
                   </View>
                 }
-                title="Terms & Conditions"
-                description="Rules for using Franky"
+                title={t('settings.legal.terms.title')}
+                description={t('settings.legal.terms.description')}
                 onPress={() => router.push('/terms-conditions')}
               />
             </View>
@@ -168,7 +176,7 @@ export default function SettingsScreen() {
           className="bg-error-error500/30 active:bg-error-error500/20 mx-10"
           onPress={handleOpenClearDataModal}
         >
-          <ThemedText className="text-error-error500">Clear all my data</ThemedText>
+          <ThemedText className="text-error-error500">{t('settings.clearData.button')}</ThemedText>
         </Button>
       </View>
 
@@ -176,11 +184,10 @@ export default function SettingsScreen() {
         <View className="items-center gap-6 px-4 pb-10">
           <View className="items-center gap-2">
             <ThemedText variant="primary" size="subtitle" className="text-xl">
-              Permanent Reset
+              {t('settings.clearData.modal.title')}
             </ThemedText>
             <ThemedText className="text-text-tertiary text-center">
-              This will wipe your entire history, including custom categories. Only proceed if you
-              want to start your workspace from scratch.
+              {t('settings.clearData.modal.description')}
             </ThemedText>
           </View>
           <View className="mt-4 w-full flex-row gap-3">
@@ -189,8 +196,39 @@ export default function SettingsScreen() {
               className="bg-error-error500 w-full"
               onPress={handleConfirmClearData}
             >
-              Clear everything
+              {t('settings.clearData.modal.confirm')}
             </Button>
+          </View>
+        </View>
+      </Modal>
+
+      <Modal ref={languageModalRef} snapPoints={['35%']}>
+        <View className="gap-6 px-4 pb-10">
+          <View className="items-center gap-1">
+            <ThemedText variant="primary" size="subtitle" className="text-xl">
+              {t('language.title')}
+            </ThemedText>
+            <ThemedText className="text-text-tertiary text-center text-sm">
+              {t('language.subtitle')}
+            </ThemedText>
+          </View>
+          <View className="gap-3">
+            {SUPPORTED_LANGUAGES.map((lang) => {
+              const isSelected = currentLanguage === lang.code;
+              return (
+                <Button
+                  key={lang.code}
+                  variant={isSelected ? 'default' : 'outline'}
+                  className={cn(isSelected ? 'bg-brand-brand500' : '')}
+                  onPress={() => {
+                    changeLanguage(lang.code as Language);
+                    languageModalRef.current?.dismiss();
+                  }}
+                >
+                  {lang.nativeLabel}
+                </Button>
+              );
+            })}
           </View>
         </View>
       </Modal>

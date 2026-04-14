@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import * as LucideIcons from 'lucide-react-native/icons';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FlatList, Pressable, View } from 'react-native';
 import ModalScreenNodge from '~/components/modal-screen-nodge';
 import { Input, ThemedText } from '~/components/ui';
@@ -44,6 +45,7 @@ function IconItem({ name, isSelected, onPress }: IconItemProps) {
 export default function IconPickerScreen() {
   const router = useRouter();
   const { selectedIcon, select } = useIconPickerStore();
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
 
   const filtered = useMemo(() => {
@@ -63,14 +65,14 @@ export default function IconPickerScreen() {
 
       <View className="px-5 pb-4">
         <ThemedText variant="primary" className="text-center text-2xl font-bold">
-          Choose Icon
+          {t('iconPicker.title')}
         </ThemedText>
       </View>
 
       <Input
         value={query}
         onChangeText={setQuery}
-        placeholder="Search icons..."
+        placeholder={t('iconPicker.searchPlaceholder')}
         placeholderTextColor={theme.gray.gray500}
         autoCapitalize="none"
         autoCorrect={false}

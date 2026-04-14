@@ -1,9 +1,12 @@
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import WelcomeLogo from '~/assets/images/welcome.svg';
 import { BlurView } from '~/components/blur-circle';
 import { ThemedText } from '~/components/ui';
 
 export default function StepOne() {
+  const { t } = useTranslation();
+
   return (
     <View className="gap-4">
       <View className="items-center justify-center">
@@ -15,10 +18,10 @@ export default function StepOne() {
 
       <View className="items-center gap-4 px-10">
         <ThemedText variant="primary" size="title" className="px-10 text-center">
-          Money, without the stress
+          {t('onboarding.step1.title')}
         </ThemedText>
         <ThemedText size="subtitle" className="text-center">
-          A calm way to understand, plan and share your money.
+          {t('onboarding.step1.subtitle')}
         </ThemedText>
       </View>
     </View>

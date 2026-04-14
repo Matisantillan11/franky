@@ -1,5 +1,6 @@
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, View } from 'react-native';
 import { logError } from '~/libs';
 import { useCreateSettings } from '~/libs/fetcher';
@@ -28,6 +29,7 @@ export const OnboardingStepper = () => {
   const [goal, setGoal] = useState<GoalType>(GoalType.SAVINGS);
 
   const router = useRouter();
+  const { t } = useTranslation();
   const storage = useStorage({ id: ONBOARDING_STORAGE.id });
 
   const { mutateAsync: createUserSettings, isPending: isUserSettingsCreating } =
@@ -66,12 +68,12 @@ export const OnboardingStepper = () => {
   });
 
   const stepActionTextDictionary = Object.freeze({
-    [STEPS.STEP_ONE]: 'Get started',
-    [STEPS.STEP_TWO]: 'Got it!',
-    [STEPS.STEP_THREE]: 'Next',
-    [STEPS.STEP_FOUR]: 'Next',
-    [STEPS.STEP_FIVE]: 'Next',
-    [STEPS.STEP_SIX]: 'Confirm & Save',
+    [STEPS.STEP_ONE]: t('onboarding.actions.getStarted'),
+    [STEPS.STEP_TWO]: t('onboarding.actions.gotIt'),
+    [STEPS.STEP_THREE]: t('onboarding.actions.next'),
+    [STEPS.STEP_FOUR]: t('onboarding.actions.next'),
+    [STEPS.STEP_FIVE]: t('onboarding.actions.next'),
+    [STEPS.STEP_SIX]: t('onboarding.actions.confirmAndSave'),
   });
 
   const isLatestStep = step === STEPS.STEP_SIX;
@@ -149,7 +151,12 @@ export const OnboardingStepper = () => {
   }, []);
 
   if (isOnboardingCompleted) {
-    return <SuccessScreen actionText="Go to my dashboard" handleActionPress={handleActionPress} />;
+    return (
+      <SuccessScreen
+        actionText={t('success.goToDashboard')}
+        handleActionPress={handleActionPress}
+      />
+    );
   }
 
   return (
@@ -168,24 +175,24 @@ export const OnboardingStepper = () => {
         {step === STEPS.STEP_ONE && (
           <View className="flex-row flex-wrap items-center justify-center">
             <ThemedText variant="secondary" className="px-14 text-center text-xs">
-              By continuing you agree to our
+              {t('onboarding.legal.disclaimer')}
             </ThemedText>
             <ThemedText
               variant="secondary"
               className="text-brand-brand500 text-xs underline"
               onPress={() => router.push(ROUTES.TERMS_CONDITIONS)}
             >
-              Terms & Conditions
+              {t('onboarding.legal.terms')}
             </ThemedText>
             <ThemedText variant="secondary" className="px-1 text-xs">
-              and
+              {t('onboarding.legal.and')}
             </ThemedText>
             <ThemedText
               variant="secondary"
               className="text-brand-brand500 text-xs underline"
               onPress={() => router.push(ROUTES.PRIVACY_POLICY)}
             >
-              Privacy Policy
+              {t('onboarding.legal.privacy')}
             </ThemedText>
           </View>
         )}

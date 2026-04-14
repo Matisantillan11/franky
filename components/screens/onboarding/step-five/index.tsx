@@ -1,5 +1,7 @@
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { Input, ThemedText } from '~/components/ui';
+import { cn } from '~/shared/utils/tailwind';
 import { transformValueToCurrency } from '~/shared/utils/text-utils';
 
 export default function StepFive({
@@ -9,14 +11,21 @@ export default function StepFive({
   monthlyIncome: string;
   updateMonthlyIncome: (income: string) => void;
 }) {
+  const { t, i18n } = useTranslation();
+  const isSpanish = i18n.language === 'es';
+
   return (
     <View className="gap-4">
       <View className="items-center gap-4 px-10">
-        <ThemedText variant="primary" size="title" className="px-10 text-center">
-          What&apos;s your monthly income?
+        <ThemedText
+          variant="primary"
+          size="title"
+          className={cn('text-center', isSpanish ? 'mx-0' : 'mx-10')}
+        >
+          {t('onboarding.step5.title')}
         </ThemedText>
         <ThemedText size="subtitle" className="text-center">
-          This helps us calculate your monthly spending power.
+          {t('onboarding.step5.subtitle')}
         </ThemedText>
       </View>
 
@@ -31,10 +40,8 @@ export default function StepFive({
           value={transformValueToCurrency(monthlyIncome, true)}
           onChangeText={updateMonthlyIncome}
         />
-        <View className="mx-10">
-          <ThemedText className="text-center">
-            This helps us calculate your monthly spending power.
-          </ThemedText>
+        <View className={cn(isSpanish ? 'mx-5' : 'mx-10')}>
+          <ThemedText className="text-center">{t('onboarding.step5.subtitle')}</ThemedText>
         </View>
       </View>
     </View>

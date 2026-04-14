@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { Platform, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import { FullWindowOverlay } from 'react-native-screens';
+import { useTranslation } from 'react-i18next';
 import { cn } from '~/shared/utils/tailwind';
 import Button from '../button';
 import Modal from '../modal';
@@ -14,19 +15,19 @@ const containerComponent =
     ? (FullWindowOverlay as React.ComponentType<React.PropsWithChildren>)
     : undefined;
 
-const SHORTCUTS = ['Today', '1 day ago', '2 days ago'] as const;
-type Shortcut = (typeof SHORTCUTS)[number];
+const SHORTCUT_KEYS = ['today', 'oneDayAgo', 'twoDaysAgo'] as const;
+type ShortcutKey = (typeof SHORTCUT_KEYS)[number];
 
-function getDateForShortcut(shortcut: Shortcut): Date {
+function getDateForShortcut(shortcut: ShortcutKey): Date {
   const date = new Date();
   date.setHours(0, 0, 0, 0);
-  if (shortcut === '1 day ago') date.setDate(date.getDate() - 1);
-  if (shortcut === '2 days ago') date.setDate(date.getDate() - 2);
+  if (shortcut === 'oneDayAgo') date.setDate(date.getDate() - 1);
+  if (shortcut === 'twoDaysAgo') date.setDate(date.getDate() - 2);
   return date;
 }
 
-function matchShortcut(date: Date): Shortcut | null {
-  for (const shortcut of SHORTCUTS) {
+function matchShortcut(date: Date): ShortcutKey | null {
+  for (const shortcut of SHORTCUT_KEYS) {
     const target = getDateForShortcut(shortcut);
     if (
       date.getFullYear() === target.getFullYear() &&
@@ -39,27 +40,27 @@ function matchShortcut(date: Date): Shortcut | null {
   return null;
 }
 
-function formatDate(date: Date): string {
-  const shortcut = matchShortcut(date);
-  if (shortcut) return shortcut;
-  const day = date.getDate();
-  const month = date.toLocaleString('en-US', { month: 'short' });
-  const year = date.getFullYear();
-  return `${day} ${month}, ${year}`;
-}
-
 export default function Calendar({ value, onChange, label }: CalendarProps) {
   const [date, setDate] = useState<Date>(value ?? new Date());
   const bottomSheetRef = useRef<BottomSheetModal | null>(null);
+  const { t, i18n } = useTranslation();
+
+  const shortcutLabels: Record<ShortcutKey, string> = {
+    today: t('calendar.today'),
+    oneDayAgo: t('calendar.oneDayAgo'),
+    twoDaysAgo: t('calendar.twoDaysAgo'),
+  };
+
+  const locale = i18n.language === 'es' ? 'es-ES' : 'en-US';
+
+  const formatDate = (d: Date): string => {
+    const shortcut = matchShortcut(d);
+    if (shortcut) return shortcutLabels[shortcut];
+    return d.toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' });
+  };
 
   const handleOpen = () => {
     bottomSheetRef.current?.present();
-  };
-
-  const handleShortcut = (shortcut: Shortcut) => {
-    const newDate = getDateForShortcut(shortcut);
-    setDate(newDate);
-    onChange?.(newDate);
   };
 
   const handleDateChange = (newDate: Date) => {
@@ -83,11 +84,11 @@ export default function Calendar({ value, onChange, label }: CalendarProps) {
 
       <Modal ref={bottomSheetRef} containerComponent={containerComponent}>
         <View className="flex-1 gap-4 px-4">
-          <DatePicker date={date} onDateChange={handleDateChange} mode="date" theme="dark" />
+          <DatePicker date={date} onDateChange={handleDateChange} mode="date" theme="dark" locale={locale} />
         </View>
 
         <View className="flex-1">
-          <Button onPress={() => bottomSheetRef.current?.dismiss()}>Save date</Button>
+          <Button onPress={() => bottomSheetRef.current?.dismiss()}>{t('calendar.saveDate')}</Button>
         </View>
       </Modal>
     </>

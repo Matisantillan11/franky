@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
 import * as icons from 'lucide-react-native/icons';
 import { useEffect, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { UseFormReturn } from 'react-hook-form';
 import { ColorValue, View } from 'react-native';
 import { Badge, FlashList, FormField, ThemedText } from '~/components/ui';
@@ -16,6 +17,7 @@ export default function CategoriesList<T extends UseFormReturn<AddTransactionFor
 }) {
   const { data: categories } = useCategoriesByType(['expense', 'income', 'both']);
   const router = useRouter();
+  const { t } = useTranslation();
   const selectedCategoryId = useCategoryPickerStore((s) => s.selectedCategoryId);
   const clear = useCategoryPickerStore((s) => s.clear);
 
@@ -53,7 +55,7 @@ export default function CategoriesList<T extends UseFormReturn<AddTransactionFor
 
   return (
     <View className="w-full gap-4 px-4">
-      <ThemedText>Category</ThemedText>
+      <ThemedText>{t('transaction.category')}</ThemedText>
       <FormField name="categoryId" form={form}>
         {({ field }) => (
           <FlashList

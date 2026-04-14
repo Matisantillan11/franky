@@ -1,9 +1,10 @@
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import Card from '~/components/card';
 import { ThemedText } from '~/components/ui';
 import { GoalType } from '~/shared/types/settings.types';
 import { cn } from '~/shared/utils/tailwind';
-import { GOAL_OPTIONS } from './constants';
+import { getGoalOptions } from './constants';
 
 export default function StepSix({
   goal,
@@ -12,23 +13,31 @@ export default function StepSix({
   goal: GoalType;
   updateGoal: (goal: GoalType) => void;
 }) {
+  const { t, i18n } = useTranslation();
+  const isSpanish = i18n.language === 'es';
+  const goalOptions = getGoalOptions(t);
+
   return (
     <View className="gap-4">
       <View className="items-center gap-4 px-10">
-        <ThemedText variant="primary" size="title" className="px-10 text-center">
-          What&apos;s your main goal?
+        <ThemedText
+          variant="primary"
+          size="title"
+          className={cn('text-center', isSpanish ? '' : 'px-10')}
+        >
+          {t('onboarding.step6.title')}
         </ThemedText>
         <ThemedText size="subtitle" className="text-center">
-          This help us personalize your experience
+          {t('onboarding.step6.subtitle')}
         </ThemedText>
       </View>
 
       <View className="items-center justify-center gap-4 px-6">
-        {GOAL_OPTIONS.map((option) => {
+        {goalOptions.map((option) => {
           const isSelected = goal === option.id;
           return (
             <Card
-              key={option.title}
+              key={option.id}
               disabled={option.disabled}
               onPress={() => updateGoal(option.id)}
               icon={

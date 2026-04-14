@@ -1,16 +1,19 @@
 import { useRouter } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import ModalScreenNodge from '~/components/modal-screen-nodge';
 import { Button, Input, ThemedText, useToast } from '~/components/ui';
 import { useSettings, useUpdateSettings } from '~/libs/fetcher';
 import { CurrencyType } from '~/shared/types/settings.types';
 import { getCurrencyWithoutSuffix } from '~/shared/utils/money-utils';
+import { cn } from '~/shared/utils/tailwind';
 import { transformCurrencyToString, transformValueToCurrency } from '~/shared/utils/text-utils';
 
 export default function UpdateMonthlyIncomeScreen() {
   const [monthlyIncome, setMonthlyIncome] = useState<string>('');
-
+  const { t, i18n } = useTranslation();
+  const isSpanish = i18n.language === 'es';
   const { data: settings, isLoading } = useSettings();
   const { mutateAsync: updateSettings, isPending } = useUpdateSettings();
 
@@ -46,7 +49,7 @@ export default function UpdateMonthlyIncomeScreen() {
         },
         onError: () => {
           addToast({
-            message: 'Error uploading your monthly income, please try again later',
+            message: t('income.update.error'),
             type: 'error',
           });
         },
@@ -58,11 +61,15 @@ export default function UpdateMonthlyIncomeScreen() {
     <View className="flex-1 gap-4">
       <ModalScreenNodge />
       <View className="items-center gap-4 px-10">
-        <ThemedText variant="primary" size="title" className="px-10 text-center">
-          What&apos;s your monthly income?
+        <ThemedText
+          variant="primary"
+          size="title"
+          className={cn('text-center', isSpanish ? '' : 'px-10')}
+        >
+          {t('income.update.title')}
         </ThemedText>
         <ThemedText size="subtitle" className="text-center">
-          This helps us calculate your monthly spending power.
+          {t('income.update.subtitle')}
         </ThemedText>
       </View>
 
@@ -78,15 +85,13 @@ export default function UpdateMonthlyIncomeScreen() {
           onChangeText={updateMonthlyIncomeSelection}
         />
         <View className="mx-10">
-          <ThemedText className="text-center">
-            This helps us calculate your monthly spending power.
-          </ThemedText>
+          <ThemedText className="text-center">{t('income.update.subtitle')}</ThemedText>
         </View>
       </View>
 
       <View className="p-10">
         <Button onPress={updateMonthlyIncome} disabled={isPending}>
-          {isPending ? 'Saving...' : 'Save'}
+          {isPending ? t('income.update.saving') : t('income.update.save')}
         </Button>
       </View>
     </View>
